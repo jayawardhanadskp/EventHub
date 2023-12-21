@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources>
+    <string name="app_name">eventHub</string>
+
+    <string name="facebook_app_id">211531602003675</string>
+    <string name="fb_login_protocol_scheme">fb211531602003675</string>
+    <string name="facebook_client_token">fc49164066b704490b2c59a466dac79d</string>
+</resources>
