@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:eventhub/widgets/drawer.dart';
+import '../../widgets/popular_services.dart';
 
-import '../../widgets/services.dart';
 
 class customerHomePage extends StatefulWidget {
+
   @override
   State<customerHomePage> createState() => _customerHomePageState();
 }
@@ -81,10 +82,17 @@ class _customerHomePageState extends State<customerHomePage> {
             ]),
           ),
 
+
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: ServiceList(), // service list
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Container(
+                color: Colors.deepPurple[100],
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: popularServiceList(), // popular service list
+                ),
+              ),
             ),
           ),
 
@@ -101,19 +109,9 @@ class _customerHomePageState extends State<customerHomePage> {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 400,
-              color: Colors.deepPurple[300],
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
 
-              child: Container(
-                color: Colors.deepPurple[300],
-                height: 400,
 
-              ),
-            ),
-          ),
+
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -132,6 +130,19 @@ class _customerHomePageState extends State<customerHomePage> {
           ),
 
 
+          SliverToBoxAdapter(
+            child: Container(
+              height: 400,
+              color: Colors.deepPurple[300],
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+
+              child: Container(
+                color: Colors.deepPurple[300],
+                height: 400,
+
+              ),
+            ),
+          ),
 
 
         ],

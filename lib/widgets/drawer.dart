@@ -1,18 +1,23 @@
 
 import 'package:flutter/material.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.deepPurple[300],
+        color: Colors.blue.shade900,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.pink,
+                color: Colors.deepPurple[700],
               ),
               child: Text(
                 'Event Hub',
