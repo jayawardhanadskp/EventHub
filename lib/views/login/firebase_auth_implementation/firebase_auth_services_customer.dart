@@ -4,80 +4,94 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
+
+
 
 class FirebaseAuthServicesCustomer {
-
   FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // firestore database to send data
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //SignUp
-  Future<User?> signUpWithEmailAndPassword(String email, String username, String password) async {
-
-    try{
-      UserCredential credential =await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
-          // firestore database to send data
-          await _firestore.collection('customers').doc(credential.user!.uid).set({
-            'email' : email,
-            'fullName' : username,
-          });
-
-      return credential.user;
-
-          // toast massage
-    } on FirebaseAuthException catch (e) {
-
-      if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(msg: 'The Email Alredy In Use ',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.red,
-            fontSize: 17.0);
-      } else {
-        Fluttertoast.showToast(msg: 'Some Error Occurred : ${e.code} ',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.red,
-            fontSize: 17.0);
-      }
-
-    }
-    return null;
-
+  // upload profile image
+  Future<String> uploadImageToStorage(String uid, Uint8List file) async {
+    Reference ref = _storage.ref().child('customer_profile_pic').child(uid).child('profilePicture.jpg');
+    UploadTask uploadTask = ref.putData(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
   }
 
-  //SignIn
-  Future<User?> signInWithEmailAndPassword(String email, String password) async {
+  // SignUp
+  Future<User?> signUpWithEmailAndPassword(String email, String username, String password, Uint8List file) async {
+    try {
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-    try{
-      UserCredential credential =await _auth.signInWithEmailAndPassword(email: email, password: password);
+      // store profile image
+      String imageUrl = await uploadImageToStorage(credential.user!.uid, file);
+
+      // firestore database to send data
+      await _firestore.collection('customers').doc(credential.user!.uid).set({
+        'email': email,
+        'fullName': username,
+        'profilePicture': imageUrl,
+      });
+
+      return credential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        Fluttertoast.showToast(
+          msg: 'The Email Already In Use ',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.red,
+          fontSize: 17.0,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Some Error Occurred : ${e.code} ',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.red,
+          fontSize: 17.0,
+        );
+      }
+    }
+    return null;
+  }
+
+  // SignIn
+  Future<User?> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       return credential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrond-password') {
-        Fluttertoast.showToast(msg: 'InvalinEmail Or Password ',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.white,
-        textColor: Colors.red,
-        fontSize: 17.0);
-    } else {
-        Fluttertoast.showToast(msg: 'Some Error Occurred : ${e.code} ',
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            textColor: Colors.red,
-            fontSize: 17.0);
+        Fluttertoast.showToast(
+          msg: 'Invalid Email Or Password ',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.red,
+          fontSize: 17.0,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Some Error Occurred : ${e.code} ',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.red,
+          fontSize: 17.0,
+        );
       }
     }
     return null;
-
   }
-
 }

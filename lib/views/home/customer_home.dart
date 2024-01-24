@@ -1,18 +1,56 @@
+
+import 'dart:io';
+
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:eventhub/widgets/drawer.dart';
+import '../../model/services_all.dart';
 import '../../widgets/popular_services.dart';
 
 
 class customerHomePage extends StatefulWidget {
+
+
 
   @override
   State<customerHomePage> createState() => _customerHomePageState();
 }
 
 class _customerHomePageState extends State<customerHomePage> {
+
+  // get user data
+  String? name = '';
+  String? email = '';
+  String? proImage = '';
+  File? imageXFile;
+  
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance.collection('customers')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+
+          if(snapshot.exists) {
+            setState(() {
+              name = snapshot.data()!['fullName'];
+              email = snapshot.data()!['email'];
+              proImage = snapshot.data()!['profilePicture'];
+            });
+          }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   TextEditingController _number = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -61,21 +99,32 @@ class _customerHomePageState extends State<customerHomePage> {
               const SizedBox(
                 height: 15,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              Padding(
+                padding: const EdgeInsets.only(right: 10, left: 10,top: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ServicesAll()));
+                    },
+                    child: Container(
+                      height: 72,
+                      width: double.infinity,
+                      color: Colors.white,
+                      child: const Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Icon(Icons.search, color: Colors.black45, size: 30,),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 25.0),
+                            child: Text('Search Services', style: TextStyle(color: Colors.black45,fontSize: 21),),
+                          )
+                        ],
+                      ),
 
-                child: TextField(
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    hintText: 'Search Services',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
                   ),
                 ),
               ),
@@ -85,7 +134,7 @@ class _customerHomePageState extends State<customerHomePage> {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 15.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Container(
                 color: Colors.deepPurple[100],
                 child: Padding(
@@ -104,7 +153,6 @@ class _customerHomePageState extends State<customerHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
 
-
                 ],
               ),
             ),
@@ -120,9 +168,19 @@ class _customerHomePageState extends State<customerHomePage> {
                 child: Container(
                   color: Colors.deepPurple[300],
                   height: 400,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [],
+                  child: Column(
+                    children: [
+
+                      // get user data part
+                       CircleAvatar(
+                        minRadius: 50,
+                        backgroundImage: imageXFile == null
+                            ? NetworkImage(proImage!)
+                            : Image.file(imageXFile!).image,
+                       ),
+                      Text('Name : ' +name!,),
+                      Text(email!, style: TextStyle(fontSize: 20, color: Colors.white),)
+                    ],
                   ),
                 ),
               ),
@@ -130,15 +188,19 @@ class _customerHomePageState extends State<customerHomePage> {
           ),
 
 
+
           SliverToBoxAdapter(
             child: Container(
               height: 400,
               color: Colors.deepPurple[300],
               padding: EdgeInsets.symmetric(horizontal: 16.0),
-
               child: Container(
                 color: Colors.deepPurple[300],
                 height: 400,
+                child:
+                Text(email!, style: TextStyle(fontSize: 20, color: Colors.white),)
+                ,
+
 
               ),
             ),

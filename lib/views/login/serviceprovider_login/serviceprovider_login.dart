@@ -1,3 +1,4 @@
+import 'package:eventhub/views/login/serviceprovider_login/serviceprovider_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/icons.dart';
@@ -7,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../model/customer_home.dart';
+import '../../profile/serviceprovider_profile.dart';
 import '../../onbord_screen.dart';
 import '../firebase_auth_implementation/firebase_auth_services_customer.dart';
 
@@ -246,7 +248,9 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
 
               TextButton(
                 onPressed: () {
-
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => serviceProviderSignUp()),
+                  );
                 },
                 child: const Text('Don\'t have an account? Sign Up',
                   style: TextStyle(color: Colors.white, fontSize: 17),),
@@ -284,6 +288,9 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
             backgroundColor: Colors.white,
             textColor: Colors.black,
             fontSize: 17.0);
+        Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ServiceProviderProfile())
+        );
 
       } else {
         Fluttertoast.showToast(msg: 'Some Error Occurred',

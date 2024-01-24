@@ -1,8 +1,15 @@
+import 'package:eventhub/views/home/customer_home.dart';
 import 'package:eventhub/views/onbord_screen.dart';
+import 'package:eventhub/views/profile/customer_profile.dart';
+import 'package:eventhub/views/splash_screen.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'model/services_all.dart';
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +17,7 @@ Future main() async {
   // For web Firebase
   if (kIsWeb) {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
         apiKey: "AIzaSyA71UrBPlvvzsW2VIT9MAfhxUPNY_dTQjk",
         appId: "1:951945595901:web:f7f2c165726610e89da794",
         messagingSenderId: "951945595901",
@@ -22,7 +29,7 @@ Future main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 
@@ -39,7 +46,15 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home:  OnbordScreen(),
+      home:  SplachScreen(),
+      routes: {
+        '/onbord_screen':(context) => OnbordScreen(),
+        '/customer_home':(context) => customerHomePage(),
+        '/customer_profile':(context) => ProfileCustomer(),
+        '/services_all':(context) => ServicesAll(),
+
+
+      },
     );
   }
 }
