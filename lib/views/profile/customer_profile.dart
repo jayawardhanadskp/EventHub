@@ -92,7 +92,7 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
                 );
               } else {
                 return const Center(
-                  child: Text('No Datas'),
+                  child: Text('No Data'),
                 );
               }
             },
