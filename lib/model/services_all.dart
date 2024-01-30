@@ -1,9 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../views/profile/serviceprovider_profile.dart';
+import '../views/profile/serviceprovider_profile_view.dart'; // Import the new page
 
 class ServicesAll extends StatefulWidget {
   const ServicesAll({Key? key}) : super(key: key);
@@ -13,24 +12,17 @@ class ServicesAll extends StatefulWidget {
 }
 
 class _ServicesAllState extends State<ServicesAll> {
-
-
-  // for search
   final TextEditingController _searchController = TextEditingController();
   List _resultList = [];
-
   List<QueryDocumentSnapshot<Map<String, dynamic>>> _allResults = [];
 
   @override
   void initState() {
-
-    // searcher
     _searchController.addListener(_onSearchChanged);
     super.initState();
   }
 
   _onSearchChanged() {
-    print(_searchController.text);
     searchResultList();
   }
 
@@ -50,10 +42,8 @@ class _ServicesAllState extends State<ServicesAll> {
     setState(() {
       _resultList = showResults;
     });
-    searchResultList();
   }
 
-  // get from firebase
   getServiceStream() async {
     var data = await FirebaseFirestore.instance
         .collection('service_providers')
@@ -65,12 +55,12 @@ class _ServicesAllState extends State<ServicesAll> {
     });
     searchResultList();
   }
+
   @override
   void didChangeDependencies() {
     getServiceStream();
     super.didChangeDependencies();
   }
-
 
   @override
   void dispose() {
@@ -83,7 +73,6 @@ class _ServicesAllState extends State<ServicesAll> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
-
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -93,57 +82,55 @@ class _ServicesAllState extends State<ServicesAll> {
             pinned: true,
             snap: false,
             leading: const BackButton(
-            color: Colors.white,
+              color: Colors.white,
             ),
-
-            title: const Text('All Services', style:
-              TextStyle(color: Colors.white, fontSize: 25),),
-
-          flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(
-                height: 80,
-                child: Padding(
-                  padding:  const EdgeInsets.only(right: 8, left: 8, bottom: 20,),
-                  child: CupertinoSearchTextField(
-                    controller: _searchController,
-                    decoration:  const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-
+            title: const Text(
+              'All Services',
+              style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
+            flexibleSpace: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  height: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 8,
+                      left: 8,
+                      bottom: 20,
                     ),
-
+                    child: CupertinoSearchTextField(
+                      controller: _searchController,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          ),
-
-
-
-
           SliverList.builder(
             itemCount: _resultList.length,
             itemBuilder: (BuildContext context, int index) {
-              List<String> photoUrls = List<String>.from(_allResults[index]['photos'] ?? []);
+              List<String> photoUrls =
+              List<String>.from(_allResults[index]['photos'] ?? []);
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ServiceProviderProfile(
-                        userId: _resultList[index]['user_id'],
+                      builder: (context) => ServiceProviderProfileView(
+                        userId: _resultList[index].id,
                       ),
                     ),
                   );
                 },
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 150,
+                    height: 140,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.deepPurple[200],
@@ -214,15 +201,8 @@ class _ServicesAllState extends State<ServicesAll> {
               );
             },
           ),
-
         ],
       ),
-
-
-
-
-
-
     );
   }
 }

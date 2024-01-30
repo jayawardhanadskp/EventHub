@@ -360,8 +360,8 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                           width: 350,
                           child: TextFormField(
                             style: TextStyle(color: Colors.white),
-                            keyboardType: TextInputType.phone, // Set the keyboard type to phone
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly], // Allow only numeric input
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             decoration: const InputDecoration(
                               labelText: 'Phone Number',
                               labelStyle: TextStyle(color: Colors.white),

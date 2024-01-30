@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:eventhub/widgets/drawer.dart';
 import '../../model/services_all.dart';
+import '../../widgets/banner_customer_home.dart';
 import '../../widgets/popular_services.dart';
 
 
@@ -97,7 +98,7 @@ class _customerHomePageState extends State<customerHomePage> {
           SliverList(
             delegate: SliverChildListDelegate([
               const SizedBox(
-                height: 15,
+                height: 14,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 10, left: 10,top: 5),
@@ -108,7 +109,7 @@ class _customerHomePageState extends State<customerHomePage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ServicesAll()));
                     },
                     child: Container(
-                      height: 72,
+                      height: 70,
                       width: double.infinity,
                       color: Colors.white,
                       child: const Row(
@@ -147,6 +148,7 @@ class _customerHomePageState extends State<customerHomePage> {
 
 
           SliverToBoxAdapter(
+            
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
@@ -161,30 +163,7 @@ class _customerHomePageState extends State<customerHomePage> {
 
 
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  color: Colors.deepPurple[300],
-                  height: 400,
-                  child: Column(
-                    children: [
-
-                      // get user data part
-                       CircleAvatar(
-                        minRadius: 50,
-                        backgroundImage: imageXFile == null
-                            ? NetworkImage(proImage!)
-                            : Image.file(imageXFile!).image,
-                       ),
-                      Text('Name : ' +name!,),
-                      Text(email!, style: TextStyle(fontSize: 20, color: Colors.white),)
-                    ],
-                  ),
-                ),
-              ),
-            ),
+              child : Banners()
           ),
 
 
@@ -198,10 +177,23 @@ class _customerHomePageState extends State<customerHomePage> {
                 color: Colors.deepPurple[300],
                 height: 400,
                 child:
-                Text(email!, style: TextStyle(fontSize: 20, color: Colors.white),)
+                Text(email!, style: const TextStyle(fontSize: 20, color: Colors.white),)
                 ,
 
+              ),
+            ),
+          ),
 
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  color: Colors.deepPurple[300],
+                  height: 400,
+
+                ),
               ),
             ),
           ),
