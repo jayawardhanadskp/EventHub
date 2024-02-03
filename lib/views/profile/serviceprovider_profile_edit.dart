@@ -90,7 +90,7 @@ class _ServiceProviderProfileEditState
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: 'Description'),
+            Tab(text: 'Description & Pricing'),
             Tab(text: 'Other Details'),
           ],
         ),
@@ -185,7 +185,16 @@ class _ServiceProviderProfileEditState
               style: TextStyle(color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.deepPurple[600],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              padding: const EdgeInsets.all(15.0),
+              fixedSize: const Size(380, 60),
+              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              primary: Colors.deepPurple[400],
+              onPrimary: Colors.white,
+              elevation: 10,
+              shadowColor: Colors.blue.shade900,
             ),
           ),
         ],
@@ -249,7 +258,16 @@ class _ServiceProviderProfileEditState
               style: TextStyle(color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.deepPurple[600],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              padding: const EdgeInsets.all(15.0),
+              fixedSize: const Size(380, 60),
+              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              primary: Colors.deepPurple[400],
+              onPrimary: Colors.white,
+              elevation: 10,
+              shadowColor: Colors.blue.shade900,
             ),
           ),
         ],
@@ -277,11 +295,11 @@ class _ServiceProviderProfileEditState
         'pricing_plan_3_price': pricing3LKRController.text,
       });
 
-      // After saving, return to ServiceProviderProfile with a result
+
       Navigator.pop(context, true);
     } catch (error) {
       print('Error updating user profile: $error');
-      // Handle the error
+
       Navigator.pop(context, false); // Indicate that data was not updated
     }
   }

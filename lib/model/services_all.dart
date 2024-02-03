@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:favorite_button/favorite_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../views/profile/serviceprovider_profile.dart';
-import '../views/profile/serviceprovider_profile_view.dart'; // Import the new page
+import '../views/profile/serviceprovider_profile_view.dart';
 
 class ServicesAll extends StatefulWidget {
   const ServicesAll({Key? key}) : super(key: key);
@@ -15,11 +16,21 @@ class _ServicesAllState extends State<ServicesAll> {
   final TextEditingController _searchController = TextEditingController();
   List _resultList = [];
   List<QueryDocumentSnapshot<Map<String, dynamic>>> _allResults = [];
+  late Future<List<String>> _favoriteStatusFuture;
 
   @override
   void initState() {
     _searchController.addListener(_onSearchChanged);
     super.initState();
+    _favoriteStatusFuture = getFavoriteStatus();
+    getServiceStream();
+  }
+
+  Future<String?> getCurrentUserId() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? currentUser = _auth.currentUser;
+
+    return currentUser?.uid;
   }
 
   _onSearchChanged() {
@@ -56,17 +67,89 @@ class _ServicesAllState extends State<ServicesAll> {
     searchResultList();
   }
 
-  @override
-  void didChangeDependencies() {
-    getServiceStream();
-    super.didChangeDependencies();
+  Future<List<String>> getFavoriteStatus() async {
+    final String? userId = await getCurrentUserId();
+    if (userId != null) {
+      DocumentSnapshot<Object?> userDocument =
+      await FirebaseFirestore.instance.collection('customers').doc(userId).get();
+
+      if (userDocument.exists) {
+        List<String> favorites = List<String>.from(userDocument['favorites'] ?? []);
+        return favorites;
+      }
+    }
+    return [];
   }
 
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
+  Future<void> addToFavorite(String userId) async {
+    try {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      var currentUser = _auth.currentUser;
+
+      if (currentUser != null) {
+        CollectionReference _collectionRef = FirebaseFirestore.instance.collection('customers');
+
+        // check if the document exists before updating
+        DocumentSnapshot<Object?> userDocument = await _collectionRef.doc(currentUser.uid).get();
+
+        if (userDocument.exists) {
+          // document exists, update the 'favorites' field
+          await _collectionRef.doc(currentUser.uid).update({
+            'favorites': FieldValue.arrayUnion([userId]),
+          });
+        } else {
+          // document doesn't exist, create 'favorites' field
+          await _collectionRef.doc(currentUser.uid).set({
+            'favorites': [userId],
+          });
+        }
+
+
+        _showFavoriteAnimation('Added to favorites!');
+      } else {
+        print('User not authenticated');
+      }
+    } catch (error) {
+      print('Error adding to favorites: $error');
+    }
+  }
+
+  Future<void> removeFromFavorite(String userId) async {
+    try {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      var currentUser = _auth.currentUser;
+
+      if (currentUser != null) {
+        CollectionReference _collectionRef = FirebaseFirestore.instance.collection('customers');
+
+        // check if the document exists before updating
+        DocumentSnapshot<Object?> userDocument = await _collectionRef.doc(currentUser.uid).get();
+
+        if (userDocument.exists) {
+          // document exists, update the 'favorites' field
+          await _collectionRef.doc(currentUser.uid).update({
+            'favorites': FieldValue.arrayRemove([userId]),
+          });
+        }
+
+        // Show a popup animation
+        _showFavoriteAnimation('Removed from favorites!');
+      } else {
+        print('User not authenticated');
+      }
+    } catch (error) {
+      print('Error removing from favorites: $error');
+    }
+  }
+
+  //  popup animation adding to favorites
+  void _showFavoriteAnimation(String message) {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   @override
@@ -111,95 +194,172 @@ class _ServicesAllState extends State<ServicesAll> {
               ],
             ),
           ),
-          SliverList.builder(
-            itemCount: _resultList.length,
-            itemBuilder: (BuildContext context, int index) {
-              List<String> photoUrls =
-              List<String>.from(_allResults[index]['photos'] ?? []);
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ServiceProviderProfileView(
-                        userId: _resultList[index].id,
-                      ),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 140,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurple[200],
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 170,
-                          height: double.infinity,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8.0),
-                              bottomLeft: Radius.circular(8.0),
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              bottomLeft: Radius.circular(8),
-                            ),
-                            child: Image.network(
-                              photoUrls.isNotEmpty ? photoUrls[0] : '',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+          _resultList.isNotEmpty
+              ? SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                List<String> photoUrls = List<String>.from(_allResults[index]['photos'] ?? []);
+                String userId = _resultList[index].id;
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ServiceProviderProfileView(
+                          userId: userId,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Container(
-                                height: 40,
-                                decoration: const BoxDecoration(),
-                                child: Text(
-                                  _resultList[index]['business_Name'],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 140,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.deepPurple[200],
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 170,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8.0),
+                                    bottomLeft: Radius.circular(8.0),
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    bottomLeft: Radius.circular(8),
+                                  ),
+                                  child: Image.network(
+                                    photoUrls.isNotEmpty ? photoUrls[0] : '',
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
+
+                                 Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Padding(
+                                       padding: const EdgeInsets.all(8.0),
+                                       child: Container(
+                                         height: 30,
+                                         decoration: const BoxDecoration(),
+                                         child: Text(
+                                           _resultList[index]['business_Name'],
+                                           style: const TextStyle(
+                                             color: Colors.white,
+                                             fontSize: 20,
+                                             fontWeight: FontWeight.w600,
+                                           ),
+                                         ),
+                                       ),
+                                     ),
+
+                                     Padding(
+                                       padding: const EdgeInsets.all(8.0),
+                                       child: Container(
+                                         height: 30,
+                                         decoration: const BoxDecoration(),
+                                         child: Text(
+                                           _resultList[index]['service'],
+                                           style: const TextStyle(
+                                             color: Colors.white,
+                                             fontSize: 16,
+                                             fontWeight: FontWeight.w600,
+                                           ),
+                                         ),
+                                       ),
+                                     ),
+
+                                     Padding(
+                                       padding: const EdgeInsets.all(8.0),
+                                       child: Container(
+                                         height: 30,
+                                         decoration: const BoxDecoration(),
+                                         child: Text(
+                                           _resultList[index]['address'],
+                                           style: const TextStyle(
+                                             color: Colors.white60,
+                                             fontSize: 14,
+                                             fontWeight: FontWeight.w600,
+                                           ),
+                                         ),
+                                       ),
+                                     ),
+                                   ],
+                                 )
+
+
+
+                            ],
+                          ),
+                          Positioned(
+                            top: 5,
+                            right: 3,
+                            child: FutureBuilder<List<String>>(
+                              future: _favoriteStatusFuture,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  // Return a loading indicator if still waiting for data
+                                  return CircularProgressIndicator();
+                                } else {
+
+                                  if (snapshot.hasError) {
+                                    print('Error: ${snapshot.error}');
+                                    return Text('Error loading favorite status');
+                                  } else {
+
+                                    List<String> favorites = snapshot.data ?? [];
+                                    bool isFavorite = favorites.contains(userId);
+                                    return GestureDetector(
+                                      onTap: () {
+                                        if (isFavorite) {
+                                          removeFromFavorite(userId);
+                                        } else {
+                                          addToFavorite(userId);
+                                        }
+                                      },
+                                      child: FavoriteButton(
+                                        isFavorite: isFavorite,
+                                        valueChanged: (isFavorite) {
+                                          if (isFavorite) {
+                                            addToFavorite(userId);
+                                          } else {
+                                            removeFromFavorite(userId);
+                                          }
+                                        },
+                                        iconDisabledColor: Colors.white,
+                                        iconSize: 50,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
                             ),
-                            SizedBox(
-                              height: 40,
-                              child: Text(
-                                _resultList[index]['service'],
-                                style: const TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                              child: Text(_resultList[index]['address']),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+              childCount: _resultList.length,
+            ),
+          )
+              : SliverToBoxAdapter(
+            child: Center(
+              child: Text('No results found.'),
+            ),
           ),
         ],
       ),

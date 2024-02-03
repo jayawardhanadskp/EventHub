@@ -163,6 +163,7 @@ class _customerHomePageState extends State<customerHomePage> {
 
 
           SliverToBoxAdapter(
+
               child : Banners()
           ),
 
@@ -176,9 +177,8 @@ class _customerHomePageState extends State<customerHomePage> {
               child: Container(
                 color: Colors.deepPurple[300],
                 height: 400,
-                child:
-                Text(email!, style: const TextStyle(fontSize: 20, color: Colors.white),)
-                ,
+
+
 
               ),
             ),

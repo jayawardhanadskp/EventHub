@@ -2,6 +2,10 @@ import 'package:eventhub/views/profile/serviceprovider_profile_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
+
+
 
 class ServiceProviderProfile extends StatefulWidget {
   final String? userId;
@@ -24,11 +28,31 @@ with SingleTickerProviderStateMixin {
 
   late User? _user;
 
+  // for calander
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+      });
+    }
+  }
+
+
+  // store events from calendar
+  Map<DateTime, List<Event>> events = {};
+
+  TextEditingController _eventController = TextEditingController();
+
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    _fetchEventsFromFirestore();
     super.initState();
     _getUserDetails();
+
   }
 
   @override
@@ -36,6 +60,27 @@ with SingleTickerProviderStateMixin {
     _tabController.dispose();
     super.dispose();
   }
+
+  Future<void> _fetchEventsFromFirestore() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+        .collection('service_providers')
+        .doc(_user?.uid)
+        .get();
+
+    Map<String, dynamic>? data = snapshot.data();
+    if (data != null && data['events'] != null) {
+      Map<String, dynamic> eventsData = Map<String, dynamic>.from(data['events']);
+      events = eventsData.map((key, value) {
+        DateTime date = DateTime.parse(key);
+        List<Event> eventList = (value as List<dynamic>).map((event) {
+          return Event(event['title']);
+        }).toList();
+        return MapEntry(date, eventList);
+      });
+    }
+  }
+
+
 
   Future<void> _getUserDetails() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -65,11 +110,8 @@ with SingleTickerProviderStateMixin {
               .doc(_user?.uid)
               .get(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
+
+              if (snapshot.hasError) {
               return Center(
                 child: Text('Error: ${snapshot.error}'),
               );
@@ -97,6 +139,11 @@ with SingleTickerProviderStateMixin {
                                 photoUrls[index],
                                 fit: BoxFit.cover,
                               );
+                            },
+                            onPageChanged: (index) {
+                              setState(() {
+                                _currentPage = index;
+                              });
                             },
                           ),
                           Positioned(
@@ -320,6 +367,183 @@ with SingleTickerProviderStateMixin {
                     ),
                     const SizedBox(height: 16),
 
+                    Column(
+                      children: [
+                        Container(
+                          color: Colors.white,
+                          child: TableCalendar(
+                            locale: "en_US",
+                            rowHeight: 50,
+                            headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                            availableGestures: AvailableGestures.all,
+                            selectedDayPredicate: (day) => isSameDay(day, _focusedDay),
+                            focusedDay: _focusedDay,
+                            firstDay: DateTime.utc(2024, 2, 1),
+                            lastDay: DateTime.utc(2030, 3, 14),
+                            onDaySelected: _onDaySelected,
+                            calendarStyle: CalendarStyle(
+                              selectedDecoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+
+                                color: Colors.deepPurple[400],
+                              ),
+                              selectedTextStyle: TextStyle(color: Colors.white),
+                              todayDecoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: Colors.deepPurple[100],
+                              ),
+                              todayTextStyle: TextStyle(color: Colors.black),
+                            ),
+                          ),
+
+
+                        ),
+
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+
+                    Row(
+                      children: [
+
+                        // display select day
+                        Text("Selected Day : ${DateFormat('yyyy-MM-dd').format(_focusedDay)}",
+                        style: TextStyle(fontSize: 17),),
+                        SizedBox(width: 20,),
+
+                        FloatingActionButton(
+                          onPressed: () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  scrollable: true,
+                                  title: Text('Enter Event'),
+                                  content: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextField(
+                                      controller: _eventController,
+                                    ),
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        if (_selectedDay != null) {
+                                          // Add the event to the calendar map
+                                          events.update(
+                                            _selectedDay!,
+                                                (eventsList) {
+                                              eventsList.add(Event(_eventController.text));
+                                              return eventsList;
+                                            },
+                                            ifAbsent: () => [Event(_eventController.text)],
+                                          );
+
+
+                                          // convert events map to a JSON-serializable format
+                                          Map<String, dynamic> eventsJson = {};
+                                          events.forEach((key, value) {
+                                            eventsJson[key.toIso8601String()] =
+                                                value.map((event) => event.toJson()).toList();
+                                          });
+
+                                          // update firestore collection
+                                          await FirebaseFirestore.instance
+                                              .collection('service_providers')
+                                              .doc(_user?.uid)
+                                              .update({'events': eventsJson});
+
+                                          Navigator.pop(context); // Close the dialog
+
+                                          _eventController.clear();
+                                        }
+                                      },
+                                      child: Text('Submit'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Icon(Icons.add),
+                        ),
+                      ],
+                    ),
+
+
+
+                   Column(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+
+                       // display events for the selected day retrieving from Firebase
+                       if (_selectedDay != null) FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                         future: FirebaseFirestore.instance
+                             .collection('service_providers')
+                             .doc(_user?.uid)
+                             .get(),
+                         builder: (context, snapshot) {
+                           if (snapshot.connectionState == ConnectionState.waiting) {
+                             // loading
+                             return CircularProgressIndicator();
+                           } else if (snapshot.hasError) {
+                             // error state
+                             return Text('Error: ${snapshot.error}');
+                           } else if (snapshot.hasData) {
+                             Map<String, dynamic>? serviceProviderData = snapshot.data!.data();
+
+                             if (serviceProviderData != null &&
+                                 serviceProviderData['events'] != null) {
+                               Map<String, dynamic> eventsData = Map<String, dynamic>.from(serviceProviderData['events']);
+
+                               // get events for the selected day
+                               List<Event> selectedDayEvents = [];
+                               String selectedDayString = _selectedDay!.toIso8601String();
+
+                               if (eventsData.containsKey(selectedDayString)) {
+                                 List<dynamic> eventsList = eventsData[selectedDayString];
+                                 selectedDayEvents = eventsList.map((event) {
+                                   return Event(event['title']);
+                                 }).toList();
+                               }
+
+                               // display events
+                               if (selectedDayEvents.isNotEmpty) {
+                                 return Column(
+                                   children: [
+                                     Text(
+                                       "Events for ${DateFormat('yyyy-MM-dd').format(_selectedDay!)}:",
+                                       style: TextStyle(fontSize: 17),
+                                     ),
+                                     ...selectedDayEvents.map((event) => Text(event.title,
+                                         style: TextStyle(fontSize: 17),
+                                     )),
+                                   ],
+                                 );
+                               } else {
+                                 return Text('No events for the selected day.');
+                               }
+                             } else {
+                               return Text('No events data available.');
+                             }
+                           } else {
+                             return Text('No data');
+                           }
+                         },
+                       ),
+
+
+                     ],
+                   ),
+
+
+
+
+
+
+                    const SizedBox(height: 16),
+
                     Container(
                       alignment: Alignment.bottomRight,
                       child: Padding(
@@ -378,3 +602,18 @@ with SingleTickerProviderStateMixin {
     );
   }
 }
+
+class Event {
+  final String title;
+
+  Event(this.title);
+
+  // Convert Event to JSON format
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+    };
+  }
+}
+
+

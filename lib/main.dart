@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'model/customer_favorites.dart';
 import 'model/services_all.dart';
 
 
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         '/customer_home':(context) => customerHomePage(),
         '/customer_profile':(context) => ProfileCustomer(),
         '/services_all':(context) => ServicesAll(),
+        '/customer_favorites' : (context) => FavoritesPage(),
 
 
       },

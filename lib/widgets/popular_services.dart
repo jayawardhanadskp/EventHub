@@ -198,7 +198,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Florists',
                           style: TextStyle(
@@ -244,7 +244,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Entertainers',
                           style: TextStyle(
@@ -290,7 +290,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Wedding Planner',
                           style: TextStyle(
@@ -336,7 +336,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Bar Services',
                           style: TextStyle(
