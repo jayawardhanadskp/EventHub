@@ -1,6 +1,7 @@
 
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventhub/views/login/firebase_auth_implementation/firebase_auth_services_customer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../model/customer_home.dart';
 import '../../home/customer_home.dart';
 import '../../onbord_screen.dart';
 import 'customer_login.dart';
@@ -24,8 +24,6 @@ class customerSignUpPage extends StatefulWidget {
   @override
   State<customerSignUpPage> createState() => _customerSignUpPageState();
 }
-
-
 
 
 
@@ -84,7 +82,7 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  OnbordScreen()),
+                      MaterialPageRoute(builder: (context) =>  const OnbordScreen()),
                     );
                   },
                   child: Image.asset('assets/logo_home.jpg'),
@@ -132,13 +130,13 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                         backgroundImage: AssetImage('assets/avatar.png'),
                       ),
                       Positioned(
+                          bottom: -10,
+                        left: 65,
                           child: IconButton(
                             onPressed: selectImage,
                             icon: const Icon(Icons.add_a_photo,
                               color: Colors.white, size: 40,),
                           ),
-                        bottom: -10,
-                        left: 65,
                       )
                     ],
                   ),
@@ -152,8 +150,8 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
 
                   width: 350,
                   child: TextFormField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                       labelText: 'Full Name',
                       labelStyle: TextStyle(color: Colors.white),
                       enabledBorder: OutlineInputBorder(
@@ -162,7 +160,7 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.person,
                         color: Colors.white,
                       ),
@@ -186,8 +184,8 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                 Container(
                   width: 350,
                   child: TextFormField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.white),
                       enabledBorder: OutlineInputBorder(
@@ -196,7 +194,7 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.email,
                         color: Colors.white,
                       ),
@@ -213,15 +211,15 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                 Container(
                   width: 350,
                   child: TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     obscureText: _isObstract,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      labelStyle: TextStyle(color: Colors.white),
-                      enabledBorder: OutlineInputBorder(
+                      labelStyle: const TextStyle(color: Colors.white),
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                       prefixIcon: const Icon(
@@ -229,11 +227,11 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                         color: Colors.white,
                       ),
                       suffixIcon: IconButton(
-                        padding: EdgeInsets.only(right: 0.0),
+                        padding: const EdgeInsets.only(right: 0.0),
                         iconSize: 25.0, // Set the desired icon size
                         icon: _isObstract
-                            ? Icon(Icons.visibility_off, color: Colors.white)
-                            : Icon(Icons.visibility, color: Colors.white),
+                            ? const Icon(Icons.visibility_off, color: Colors.white)
+                            : const Icon(Icons.visibility, color: Colors.white),
                         onPressed: _togglePasswordVisibility,
                       ),
                     ),
@@ -248,15 +246,15 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                 Container(
                   width: 350,
                   child: TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     obscureText: _isObstract,
                     decoration: InputDecoration(
                       labelText: 'Confirm Password',
-                      labelStyle: TextStyle(color: Colors.white),
-                      enabledBorder: OutlineInputBorder(
+                      labelStyle: const TextStyle(color: Colors.white),
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                       prefixIcon: const Icon(
@@ -264,11 +262,11 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                         color: Colors.white,
                       ),
                       suffixIcon: IconButton(
-                        padding: EdgeInsets.only(right: 0.0),
+                        padding: const EdgeInsets.only(right: 0.0),
                         iconSize: 25.0, // Set the desired icon size
                         icon: _isObstract
-                            ? Icon(Icons.visibility_off, color: Colors.white)
-                            : Icon(Icons.visibility, color: Colors.white),
+                            ? const Icon(Icons.visibility_off, color: Colors.white)
+                            : const Icon(Icons.visibility, color: Colors.white),
                         onPressed: _togglePasswordVisibility,
                       ),
                     ),
@@ -283,21 +281,21 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
 
                 ElevatedButton(
                   onPressed: _signUp,
-
-                  child: _isSigninUp ? CircularProgressIndicator(color: Colors.blue.shade900,):
-                  Text("SIGN UP"),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    fixedSize: Size(230, 60),
-                    textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    padding: const EdgeInsets.all(15.0),
+                    fixedSize: const Size(230, 60),
+                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     primary: Colors.white,
                     onPrimary: Colors.blue.shade900,
                     elevation: 10,
                     shadowColor: Colors.blue.shade900,
                   ),
+
+                  child: _isSigninUp ? CircularProgressIndicator(color: Colors.blue.shade900,):
+                  const Text("SIGN UP"),
                 ),
 
                 const SizedBox(
@@ -336,16 +334,16 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
 
 
                     InkWell(
-                      onTap: _signInWithGoogle,
+                      onTap: () => _signInWithGoogle(),
                       borderRadius: BorderRadius.circular(20),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset('assets/google-logo-for_button.jpg',
                           height: 70,
-
                         ),
                       ),
                     ),
+
 
 
                     const SizedBox(
@@ -375,10 +373,10 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  CustomerLogin()),
+                      MaterialPageRoute(builder: (context) =>  const CustomerLogin()),
                     );
                   },
-                  child: Text('Have an account? Log In',
+                  child: const Text('Have an account? Log In',
                     style: TextStyle(color: Colors.white, fontSize: 17),),
                 ),
               ],
@@ -461,37 +459,58 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
   //password visibility button
   void _togglePasswordVisibility() => setState(() => _isObstract = !_isObstract);
 
+  // to get google and facebook sign in to save data on firestore
+  void saveUserDataToFirestore(User? user) async {
+    if (user != null) {
+      String uid = user.uid;
+      String username = user.displayName ?? '';
+      String email = user.email ?? '';
+      String imageUrl = user.photoURL ?? '';
+
+      await FirebaseFirestore.instance.collection('customers').doc(uid).set({
+        'email': email,
+        'name': username,
+        'photo': imageUrl,
+
+      });
+    }
+  }
+
   // sign in with google
-  _signInWithGoogle()async{
+  _signInWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-    try{
+    try {
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication = await
-        googleSignInAccount.authentication;
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken,
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
+
+        UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+        User? user = authResult.user;
+
+        saveUserDataToFirestore(user);
+
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  customerHomePage()),
+          MaterialPageRoute(builder: (context) => customerHomePage()),
         );
       }
-
-    } catch(e) {
-
-      Fluttertoast.showToast(msg: 'Error: $e ',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.red,
-          fontSize: 17.0);
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error: $e ',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.white,
+        textColor: Colors.red,
+        fontSize: 17.0,
+      );
     }
   }
 

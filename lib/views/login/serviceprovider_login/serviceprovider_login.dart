@@ -7,7 +7,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../../model/customer_home.dart';
+import '../../home/serviceprovider_home.dart';
 import '../../profile/serviceprovider_profile.dart';
 import '../../onbord_screen.dart';
 import '../firebase_auth_implementation/firebase_auth_services_customer.dart';
@@ -59,7 +59,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  OnbordScreen()),
+                    MaterialPageRoute(builder: (context) =>  const OnbordScreen()),
                   );
                 },
                 child: Image.asset('assets/logo_home.jpg'),
@@ -93,8 +93,8 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
               Container(
                 width: 350,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                     labelText: 'E-mail',
                     labelStyle: TextStyle(color: Colors.white),
                     enabledBorder: OutlineInputBorder(
@@ -103,7 +103,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.email,
                       color: Colors.white,
                     ),
@@ -129,15 +129,15 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
               Container(
                 width: 350,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   obscureText: _isObstract,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.white),
-                    enabledBorder: OutlineInputBorder(
+                    labelStyle: const TextStyle(color: Colors.white),
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
                     prefixIcon: const Icon(
@@ -145,11 +145,11 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                       color: Colors.white,
                     ),
                     suffixIcon: IconButton(
-                      padding: EdgeInsets.only(right: 0.0), // Adjust padding
+                      padding: const EdgeInsets.only(right: 0.0), // Adjust padding
                       iconSize: 25.0, // Set the desired icon size
                       icon: _isObstract
-                          ? Icon(Icons.visibility_off, color: Colors.white)
-                          : Icon(Icons.visibility, color: Colors.white),
+                          ? const Icon(Icons.visibility_off, color: Colors.white)
+                          : const Icon(Icons.visibility, color: Colors.white),
                       onPressed: _togglePasswordVisibility,
                     ),
                   ),
@@ -163,14 +163,14 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
               ElevatedButton(
                 onPressed: _signIn,
                 child:
-                _isSigning ? CircularProgressIndicator(color: Colors.blue.shade900): Text("LOGIN"),
+                _isSigning ? CircularProgressIndicator(color: Colors.blue.shade900): const Text("LOGIN"),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  padding: EdgeInsets.all(15.0),
-                  fixedSize: Size(230, 60),
-                  textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  padding: const EdgeInsets.all(15.0),
+                  fixedSize: const Size(230, 60),
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   primary: Colors.white,
                   onPrimary: Colors.blue.shade900,
                   elevation: 10,
@@ -182,23 +182,19 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                 height: 13,
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(15.0),
+              const Padding(
+                padding: EdgeInsets.all(15.0),
                 child: Row(
                   children: [
-                    Expanded(child: const Divider(
+                    Expanded(child: Divider(
                       thickness: 0.9,
                       color: Colors.white,
                     ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: const Text("Or Continue With",
-                        style: TextStyle(color: Colors.white),),
-                    ),
 
-                    Expanded(child: const Divider(
+
+                    Expanded(child: Divider(
                       thickness: 0.9,
                       color: Colors.white,
                     ),
@@ -207,40 +203,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                 ),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
 
-                  InkWell(
-                    onTap: _signInWithGoogle,
-                    borderRadius: BorderRadius.circular(20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset('assets/google-logo-for_button.jpg',
-                        height: 70,
-
-                      ),
-                    ),
-                  ),
-
-
-                  const SizedBox(
-                    width: 30,
-                  ),
-
-                  InkWell(
-                    onTap: _signInWithFacebook,
-                    borderRadius: BorderRadius.circular(20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset('assets/facebook-f-logo-for-button.jpg',
-                        height: 70,
-
-                      ),
-                    ),
-                  ),
-                ],
-              ),
 
               const SizedBox(
                 height: 10,
@@ -289,7 +252,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
             textColor: Colors.black,
             fontSize: 17.0);
         Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ServiceProviderProfile())
+        MaterialPageRoute(builder: (context) => const serviceproviderHomePage())
         );
 
       } else {

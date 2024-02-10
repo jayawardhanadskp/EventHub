@@ -39,12 +39,14 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
   String _selectedService = '';
   String _address = '';
   String _buisnessName = '';
-  String _password = ''; // Add password field
+  String _password = '';
+
 
 
   // image picker
   List<Uint8List?> _photos = [null, null, null, null];
-  File? file;
+
+
 
 
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -56,6 +58,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
     });
   }
 
+  // for images
   Future<List<String>> uploadImagesToStorage(String uid, List<Uint8List?> files) async {
     List<String> downloadUrls = [];
 
@@ -70,6 +73,25 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
     }
 
     return downloadUrls;
+  }
+
+  Uint8List? file;
+  // image picker profile photo
+  Uint8List? _image;
+  void selectPhoto() async{
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  // upload profile image
+  Future<String> uploadImageToStorage(String uid, Uint8List file) async {
+    Reference ref = _storage.ref().child('serviceprovider_photo').child(uid).child('photo.jpg');
+    UploadTask uploadTask = ref.putData(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
   }
 
 
@@ -100,6 +122,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
           ElevatedButton(
             onPressed: () async {
 
+             
               setState(() {
                 _isSigninUp = true;
               });
@@ -111,11 +134,15 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                     email: _email,
                     password: _password,
 
+
                   );
 
 
-                  // store profile image
+                  // store  images
                   List<String> imageUrls = await uploadImagesToStorage(userCredential.user!.uid, _photos);
+
+                  // store profile image
+                  String imageUrl = await uploadImageToStorage(userCredential.user!.uid, _image!);
 
 
                   // Store user details in Firestore
@@ -127,6 +154,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                     'address': _address,
                     'business_Name' : _buisnessName,
                     'photos': imageUrls,
+                    'photo': imageUrl,
                   });
 
                   Fluttertoast.showToast(msg: 'User Is Successfully Created ',
@@ -289,6 +317,53 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                     ),
                     content: Column(
                       children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: 120,
+                          height: 120,
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade900,
+                            borderRadius: BorderRadius.circular(70),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xff7DDCFB),
+                                Color(0xffBC67F2),
+                                Color(0xffACF6AF),
+                                Color(0xffF95549),
+                              ],
+                            ),
+                          ),
+                          child: Stack(
+                            children: [
+                              _image != null ?
+                              CircleAvatar(
+                                radius: 60,
+                                backgroundImage: MemoryImage(_image! ),
+                              )
+                                  :
+                              const CircleAvatar(
+                                radius: 60,
+                                backgroundImage: AssetImage('assets/avatar.png'),
+                              ),
+                              Positioned(
+                                bottom: -10,
+                                left: 65,
+                                child: IconButton(
+                                  onPressed: selectPhoto,
+                                  icon: Icon(Icons.add_a_photo,
+                                    color: Colors.white, size: 40,),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
                         const SizedBox(
                           height: 10,
                         ),

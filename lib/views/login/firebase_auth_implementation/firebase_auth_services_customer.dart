@@ -1,13 +1,11 @@
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'dart:typed_data';
-import 'package:firebase_storage/firebase_storage.dart';
-
-
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthServicesCustomer {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,7 +21,7 @@ class FirebaseAuthServicesCustomer {
     return downloadUrl;
   }
 
-  // SignUp
+  // sign Up with email and password
   Future<User?> signUpWithEmailAndPassword(String email, String username, String password, Uint8List file) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -34,8 +32,8 @@ class FirebaseAuthServicesCustomer {
       // firestore database to send data
       await _firestore.collection('customers').doc(credential.user!.uid).set({
         'email': email,
-        'fullName': username,
-        'profilePicture': imageUrl,
+        'name': username,
+        'photo': imageUrl,
       });
 
       return credential.user;
@@ -65,13 +63,13 @@ class FirebaseAuthServicesCustomer {
     return null;
   }
 
-  // SignIn
+  // sign In with email and password
   Future<User?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       return credential.user;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'wrond-password') {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         Fluttertoast.showToast(
           msg: 'Invalid Email Or Password ',
           toastLength: Toast.LENGTH_LONG,
@@ -94,4 +92,6 @@ class FirebaseAuthServicesCustomer {
     }
     return null;
   }
+
+
 }

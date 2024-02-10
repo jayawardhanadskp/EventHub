@@ -79,20 +79,20 @@ class _BannersState extends State<Banners> {
                     });
                   },
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 180.0, left: 10),
-                  child: Positioned(
-                    left: 50,
-                    child: Text(
-                      "Dream it,         plan it,               live it...",
-
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 50,
-                        fontWeight: FontWeight.w900
+                const Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 180.0, left: 10),
+                      child: Text(
+                        "Dream it,         plan it,               live it...",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 50,
+                            fontWeight: FontWeight.w900
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
                 Positioned(
                   bottom: 10,

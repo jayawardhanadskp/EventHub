@@ -1,3 +1,5 @@
+import 'package:eventhub/views/chat/chat_page.dart';
+import 'package:eventhub/views/chat/inbox_page.dart';
 import 'package:eventhub/views/profile/serviceprovider_profile_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,10 +9,12 @@ import 'package:intl/intl.dart';
 
 
 
-class ServiceProviderProfile extends StatefulWidget {
-  final String? userId;
 
-  const ServiceProviderProfile({Key? key, this.userId}) : super(key: key);
+
+class ServiceProviderProfile extends StatefulWidget {
+
+
+  const ServiceProviderProfile({Key? key,}) : super(key: key);
 
   @override
   _ServiceProviderProfileState createState() => _ServiceProviderProfileState();
@@ -64,7 +68,7 @@ with SingleTickerProviderStateMixin {
   Future<void> _fetchEventsFromFirestore() async {
     DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
         .collection('service_providers')
-        .doc(_user?.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
 
     Map<String, dynamic>? data = snapshot.data();
@@ -107,7 +111,7 @@ with SingleTickerProviderStateMixin {
         child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: FirebaseFirestore.instance
               .collection('service_providers')
-              .doc(_user?.uid)
+              .doc(FirebaseAuth.instance.currentUser!.uid)
               .get(),
           builder: (context, snapshot) {
 
@@ -120,7 +124,6 @@ with SingleTickerProviderStateMixin {
               List<String> photoUrls =
               List<String>.from(serviceProviderData?['photos'] ?? []);
 
-              String serviceProviderId = _user?.uid ?? '';
 
               return Padding(
                 padding: const EdgeInsets.all(0.0),
@@ -586,6 +589,14 @@ with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ),
+                    ),
+
+                    ElevatedButton(onPressed: () {
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => InboxPage())
+                      );
+                    },
+                        child: Text('Inbox'),
                     ),
 
                   ],

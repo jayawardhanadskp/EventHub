@@ -155,7 +155,7 @@ class _ServicesAllState extends State<ServicesAll> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[100],
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -316,7 +316,18 @@ class _ServicesAllState extends State<ServicesAll> {
 
                                   if (snapshot.hasError) {
                                     print('Error: ${snapshot.error}');
-                                    return Text('Error loading favorite status');
+                                    return FavoriteButton(
+
+                                      valueChanged: (isFavorite) {
+                                        if (isFavorite) {
+                                          addToFavorite(userId);
+                                        } else {
+                                          removeFromFavorite(userId);
+                                        }
+                                      },
+                                      iconDisabledColor: Colors.white,
+                                      iconSize: 50,
+                                    );
                                   } else {
 
                                     List<String> favorites = snapshot.data ?? [];

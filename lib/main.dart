@@ -1,3 +1,5 @@
+
+import 'package:eventhub/views/chat/inbox_page.dart';
 import 'package:eventhub/views/home/customer_home.dart';
 import 'package:eventhub/views/onbord_screen.dart';
 import 'package:eventhub/views/profile/customer_profile.dart';
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
         '/customer_profile':(context) => ProfileCustomer(),
         '/services_all':(context) => ServicesAll(),
         '/customer_favorites' : (context) => FavoritesPage(),
+        '/inbox_customer' : (context) => InboxPage(),
 
 
       },
