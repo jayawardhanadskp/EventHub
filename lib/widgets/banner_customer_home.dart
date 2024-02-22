@@ -84,7 +84,7 @@ class _BannersState extends State<Banners> {
                     Padding(
                       padding: EdgeInsets.only(top: 180.0, left: 10),
                       child: Text(
-                        "Dream it,         plan it,               live it...",
+                        "Dream it, \nplan it,      \nlive it...",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 50,

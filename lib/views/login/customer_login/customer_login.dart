@@ -161,8 +161,9 @@ class _CustomerLoginState extends State<CustomerLogin> {
               ),
               ElevatedButton(
                 onPressed: _signIn,
-                child:
-                _isSigning ? CircularProgressIndicator(color: Colors.blue.shade900): const Text("LOGIN"),
+                child: _isSigning
+                    ? CircularProgressIndicator(color: Colors.blue.shade900)
+                    : const Text("LOGIN"),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -170,12 +171,14 @@ class _CustomerLoginState extends State<CustomerLogin> {
                   padding: const EdgeInsets.all(15.0),
                   fixedSize: const Size(230, 60),
                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  primary: Colors.white,
-                  onPrimary: Colors.blue.shade900,
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.blue.shade900,
                   elevation: 10,
                   shadowColor: Colors.blue.shade900,
                 ),
               ),
+
+
 
               const SizedBox(
                 height: 13,

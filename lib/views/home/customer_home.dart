@@ -59,7 +59,7 @@ class _customerHomePageState extends State<customerHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.deepPurple[100],
+      backgroundColor: Colors.deepPurple[50],
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -137,7 +137,7 @@ class _customerHomePageState extends State<customerHomePage> {
             child: Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Container(
-                color: Colors.deepPurple[100],
+                color: Colors.deepPurple[50],
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: popularServiceList(), // popular service list

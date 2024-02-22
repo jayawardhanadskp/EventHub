@@ -49,14 +49,14 @@ class popularServiceList extends StatelessWidget {
                       ],
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/event-planners.png',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -65,7 +65,7 @@ class popularServiceList extends StatelessWidget {
                           'Event Planners',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -101,8 +101,8 @@ class popularServiceList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/venus.jpg',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -111,7 +111,7 @@ class popularServiceList extends StatelessWidget {
                           'Venues',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -147,8 +147,8 @@ class popularServiceList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/photographer.jpg',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -157,7 +157,7 @@ class popularServiceList extends StatelessWidget {
                           'Photographers',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -193,8 +193,8 @@ class popularServiceList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/florists.jpeg',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -203,7 +203,7 @@ class popularServiceList extends StatelessWidget {
                           'Florists',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -239,8 +239,8 @@ class popularServiceList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/entertainers.png',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -249,7 +249,7 @@ class popularServiceList extends StatelessWidget {
                           'Entertainers',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -285,8 +285,8 @@ class popularServiceList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/wedding-planner.png',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -295,7 +295,7 @@ class popularServiceList extends StatelessWidget {
                           'Wedding Planner',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -328,11 +328,11 @@ class popularServiceList extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular( 10),
                           child: Image.asset(
                             'assets/bar-service.jpg',
-                            width: 120,
-                            height: 108,
+                            width: 121,
+                            height: 111,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -341,7 +341,7 @@ class popularServiceList extends StatelessWidget {
                           'Bar Services',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
