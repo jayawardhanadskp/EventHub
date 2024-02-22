@@ -5,6 +5,7 @@ import 'package:favorite_button/favorite_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
+import '../bookings/booking.dart';
 import '../chat/chat_page.dart';
 
 class ServiceProviderProfileView extends StatefulWidget {
@@ -190,7 +191,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[100],
+      backgroundColor: Colors.deepPurple[50],
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -332,7 +333,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                         ),
                         const SizedBox(height: 16),
                         Container(
-                          color: Colors.deepPurple[200],
+                          color: Colors.deepPurple[50],
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -341,7 +342,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   'Business Name: ${serviceProviderData?['business_Name']}',
                                   style: const TextStyle(
                                       fontSize: 20,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 10),
@@ -349,7 +350,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   'Description: ${serviceProviderData?['description'] ?? 'Not Added'}',
                                   style: const TextStyle(
                                       fontSize: 17,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 const SizedBox(height: 10),
@@ -358,7 +359,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   color: Colors.deepPurple[400],
                                 ),
                                 Container(
-                                  height: 120,
+                                  height: 200,
                                   child: Column(
                                     children: [
                                       Padding(
@@ -406,6 +407,39 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                       color: Colors.white,
                                                       fontSize: 17),
                                                 ),
+                                                SizedBox(height: 10,),
+                                                ElevatedButton(
+                                                  onPressed: () {
+
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => BookingPage(
+                                                          serviceproviderId: widget.userId,
+                                                          customerId: FirebaseAuth.instance.currentUser!.uid,
+                                                          selectedPlan: serviceProviderData?['pricing_plan_1'],
+                                                          selectedPrice: serviceProviderData?['pricing_plan_1_price'],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    'Book RS ${serviceProviderData?['pricing_plan_1_price']} Plan',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(5.0),
+                                                    ),
+                                                    padding: const EdgeInsets.all(12.0),
+                                                    fixedSize: const Size(380, 60),
+                                                    textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                                                    backgroundColor: Colors.deepPurple[400],
+                                                    foregroundColor: Colors.white,
+                                                    elevation: 10,
+                                                    shadowColor: Colors.blue.shade900,
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                             Column(
@@ -421,6 +455,29 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 17),
+                                                ),
+                                                SizedBox(height: 10,),
+                                                ElevatedButton(
+                                                  onPressed: () {
+
+
+                                                  },
+                                                  child: Text(
+                                                    'Book RS ${serviceProviderData?['pricing_plan_2_price']} Plan',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(5.0),
+                                                    ),
+                                                    padding: const EdgeInsets.all(12.0),
+                                                    fixedSize: const Size(380, 60),
+                                                    textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                                                    backgroundColor: Colors.deepPurple[400],
+                                                    foregroundColor: Colors.white,
+                                                    elevation: 10,
+                                                    shadowColor: Colors.blue.shade900,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -446,6 +503,8 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                     ],
                                   ),
                                 ),
+
+
                                 const SizedBox(height: 10),
                                 const SizedBox(height: 10),
                                 Column(
@@ -508,7 +567,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    // Display events for the selected day retrieving from Firebase
+                                    // display events for the selected day
                                     if (_selectedDay != null)
                                       FutureBuilder<
                                           DocumentSnapshot<
@@ -518,8 +577,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                             .doc(widget.userId)
                                             .get(),
                                         builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
+                                          if (snapshot.connectionState == ConnectionState.waiting) {
                                             // Loading state
                                             return const CircularProgressIndicator();
                                           } else if (snapshot.hasError) {
@@ -527,15 +585,12 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                             return Text(
                                                 'Error: ${snapshot.error}');
                                           } else if (snapshot.hasData) {
-                                            Map<String, dynamic>?
+                                                Map<String, dynamic>?
                                                 serviceProviderData =
                                                 snapshot.data!.data();
 
-                                            if (serviceProviderData != null &&
-                                                serviceProviderData['events'] !=
-                                                    null) {
-                                              Map<String, dynamic> eventsData =
-                                                  Map<String, dynamic>.from(
+                                            if (serviceProviderData != null && serviceProviderData['events'] != null) {
+                                              Map<String, dynamic> eventsData = Map<String, dynamic>.from(
                                                       serviceProviderData[
                                                           'events']);
 
@@ -654,9 +709,9 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                         );
                       } else if (snapshot.hasData) {
                         Map<String, dynamic>? serviceProviderData =
-                        snapshot.data!.data();
-                        List<String> photoUrls =
-                        List<String>.from(serviceProviderData?['photos'] ?? []);
+                            snapshot.data!.data();
+                        List<String> photoUrls = List<String>.from(
+                            serviceProviderData?['photos'] ?? []);
 
                         return ElevatedButton(
                           onPressed: () async {
@@ -665,9 +720,12 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                               MaterialPageRoute(
                                 builder: (context) => ChatPage(
                                   reciverUserId: widget.userId,
-                                  senderId: FirebaseAuth.instance.currentUser!.uid,
-                                  picture: photoUrls.isNotEmpty ? photoUrls[0] : '',
-                                  reciverName: serviceProviderData?['name'] ?? 'Unknown',
+                                  senderId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  picture:
+                                      photoUrls.isNotEmpty ? photoUrls[0] : '',
+                                  reciverName:
+                                      serviceProviderData?['name'] ?? 'Unknown',
                                 ),
                               ),
                             );
@@ -677,9 +735,10 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                               borderRadius: BorderRadius.circular(5.0),
                             ),
                             padding: const EdgeInsets.all(12.0),
-                            textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                            primary: Colors.deepPurple[400],
-                            onPrimary: Colors.white,
+                            textStyle: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w600),
+                            backgroundColor: Colors.deepPurple[400],
+                            foregroundColor: Colors.white,
                             elevation: 10,
                             shadowColor: Colors.blue.shade900,
                           ),
@@ -693,7 +752,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                           ),
                         );
                       } else {
-                        return SizedBox.shrink(); // or any other default widget if needed
+                        return const SizedBox.shrink();
                       }
                     },
                   ),
@@ -701,7 +760,6 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -714,10 +772,11 @@ class Event {
 
   Event(this.title);
 
-  // Convert Event to JSON format
+  // convert Event to JSON
   Map<String, dynamic> toJson() {
     return {
       'title': title,
     };
   }
 }
+

@@ -324,8 +324,8 @@ with SingleTickerProviderStateMixin {
                                   padding: const EdgeInsets.all(15.0),
                                   fixedSize: const Size(380, 60),
                                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                  primary: Colors.deepPurple[400],
-                                  onPrimary: Colors.white,
+                                  backgroundColor: Colors.deepPurple[400],
+                                  foregroundColor: Colors.white,
                                   elevation: 10,
                                   shadowColor: Colors.blue.shade900,
                                 ),
@@ -377,7 +377,7 @@ with SingleTickerProviderStateMixin {
                           child: TableCalendar(
                             locale: "en_US",
                             rowHeight: 50,
-                            headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                            headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
                             availableGestures: AvailableGestures.all,
                             selectedDayPredicate: (day) => isSameDay(day, _focusedDay),
                             focusedDay: _focusedDay,
@@ -390,13 +390,13 @@ with SingleTickerProviderStateMixin {
 
                                 color: Colors.deepPurple[400],
                               ),
-                              selectedTextStyle: TextStyle(color: Colors.white),
+                              selectedTextStyle: const TextStyle(color: Colors.white),
                               todayDecoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: Colors.deepPurple[100],
                               ),
-                              todayTextStyle: TextStyle(color: Colors.black),
+                              todayTextStyle: const TextStyle(color: Colors.black),
                             ),
                           ),
 
@@ -405,15 +405,15 @@ with SingleTickerProviderStateMixin {
 
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
 
                     Row(
                       children: [
 
                         // display select day
                         Text("Selected Day : ${DateFormat('yyyy-MM-dd').format(_focusedDay)}",
-                        style: TextStyle(fontSize: 17),),
-                        SizedBox(width: 20,),
+                        style: const TextStyle(fontSize: 17),),
+                        const SizedBox(width: 20,),
 
                         FloatingActionButton(
                           onPressed: () async {
@@ -422,7 +422,7 @@ with SingleTickerProviderStateMixin {
                               builder: (context) {
                                 return AlertDialog(
                                   scrollable: true,
-                                  title: Text('Enter Event'),
+                                  title: const Text('Enter Event'),
                                   content: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextField(
@@ -462,14 +462,14 @@ with SingleTickerProviderStateMixin {
                                           _eventController.clear();
                                         }
                                       },
-                                      child: Text('Submit'),
+                                      child: const Text('Submit'),
                                     ),
                                   ],
                                 );
                               },
                             );
                           },
-                          child: Icon(Icons.add),
+                          child: const Icon(Icons.add),
                         ),
                       ],
                     ),
@@ -489,7 +489,7 @@ with SingleTickerProviderStateMixin {
                          builder: (context, snapshot) {
                            if (snapshot.connectionState == ConnectionState.waiting) {
                              // loading
-                             return CircularProgressIndicator();
+                             return const CircularProgressIndicator();
                            } else if (snapshot.hasError) {
                              // error state
                              return Text('Error: ${snapshot.error}');
@@ -517,21 +517,21 @@ with SingleTickerProviderStateMixin {
                                    children: [
                                      Text(
                                        "Events for ${DateFormat('yyyy-MM-dd').format(_selectedDay!)}:",
-                                       style: TextStyle(fontSize: 17),
+                                       style: const TextStyle(fontSize: 17),
                                      ),
                                      ...selectedDayEvents.map((event) => Text(event.title,
-                                         style: TextStyle(fontSize: 17),
+                                         style: const TextStyle(fontSize: 17),
                                      )),
                                    ],
                                  );
                                } else {
-                                 return Text('No events for the selected day.');
+                                 return const Text('No events for the selected day.');
                                }
                              } else {
-                               return Text('No events data available.');
+                               return const Text('No events data available.');
                              }
                            } else {
-                             return Text('No data');
+                             return const Text('No data');
                            }
                          },
                        ),
@@ -574,8 +574,8 @@ with SingleTickerProviderStateMixin {
                             ),
                             padding: const EdgeInsets.all(15.0),
                             textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            primary: Colors.deepPurple[400],
-                            onPrimary: Colors.white,
+                            backgroundColor: Colors.deepPurple[400],
+                            foregroundColor: Colors.white,
                             elevation: 10,
                             shadowColor: Colors.blue.shade900,
                           ),
@@ -596,7 +596,7 @@ with SingleTickerProviderStateMixin {
                       MaterialPageRoute(builder: (context) => InboxPage())
                       );
                     },
-                        child: Text('Inbox'),
+                        child: const Text('Inbox'),
                     ),
 
                   ],
