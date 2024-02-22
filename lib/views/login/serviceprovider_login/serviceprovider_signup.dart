@@ -99,26 +99,26 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
 
   Widget _controlsBuilder(context, details) {
     if (_currentStep == 2) {
-      // Sign Up button on the last step
+      // sign Up button on last step
       return Row(
         children: [
           ElevatedButton(
             onPressed: details.onStepCancel,
-            child: Text("Back"),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.all(15.0),
-              fixedSize: Size(80, 60),
-              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              primary: Colors.deepPurple[400],
-              onPrimary: Colors.white,
+              padding: const EdgeInsets.all(15.0),
+              fixedSize: const Size(80, 60),
+              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.white,
               elevation: 10,
               shadowColor: Colors.blue.shade900,
             ),
+            child: const Text("Back"),
           ),
-          SizedBox(width: 5,),
+          const SizedBox(width: 5,),
           ElevatedButton(
             onPressed: () async {
 
@@ -167,7 +167,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  ServiceProviderLogin()),
+                    MaterialPageRoute(builder: (context) =>  const ServiceProviderLogin()),
                   );
 
                 } on FirebaseAuthException catch (e) {
@@ -181,22 +181,22 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                 }
 
             },
-            child: _isSigninUp ? CircularProgressIndicator(color: Colors.blue.shade900,):
-            Text(
-              'Sign Up',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.all(15.0),
-              fixedSize: Size(230, 60),
-              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              primary: Colors.white,
-              onPrimary: Colors.blue.shade900,
+              padding: const EdgeInsets.all(15.0),
+              fixedSize: const Size(230, 60),
+              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.blue.shade900,
               elevation: 10,
               shadowColor: Colors.white,
+            ),
+            child: _isSigninUp ? CircularProgressIndicator(color: Colors.blue.shade900,):
+            const Text(
+              'Sign Up',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -208,36 +208,36 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
         children: [
           ElevatedButton(
             onPressed: details.onStepCancel,
-            child: Text("Back"),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.all(15.0),
-              fixedSize: Size(150, 60),
-              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              primary: Colors.deepPurple[400],
-              onPrimary: Colors.white,
+              padding: const EdgeInsets.all(15.0),
+              fixedSize: const Size(150, 60),
+              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.white,
               elevation: 10,
               shadowColor: Colors.blue.shade900,
             ),
+            child: const Text("Back"),
           ),
           const SizedBox(width: 10,),
           ElevatedButton(
             onPressed: details.onStepContinue,
-            child: Text("Next"),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.all(15.0),
-              fixedSize: Size(150, 60),
-              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              primary: Colors.white,
-              onPrimary: Colors.blue.shade900,
+              padding: const EdgeInsets.all(15.0),
+              fixedSize: const Size(150, 60),
+              textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.blue.shade900,
               elevation: 10,
               shadowColor: Colors.blue.shade900,
             ),
+            child: const Text("Next"),
           ),
         ],
       );
@@ -261,7 +261,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  OnbordScreen()),
+                    MaterialPageRoute(builder: (context) =>  const OnbordScreen()),
                   );
                 },
                 child: Image.asset('assets/logo_home.jpg'),
@@ -308,7 +308,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                 controlsBuilder: _controlsBuilder,
                 steps: [
                   Step(
-                    title: Text(
+                    title: const Text(
                       'Personal Information',
                       style: TextStyle(
                         color: Colors.white,
@@ -353,7 +353,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                                 left: 65,
                                 child: IconButton(
                                   onPressed: selectPhoto,
-                                  icon: Icon(Icons.add_a_photo,
+                                  icon: const Icon(Icons.add_a_photo,
                                     color: Colors.white, size: 40,),
                                 ),
                               )
@@ -370,7 +370,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                         Container(
                           width: 350,
                           child: TextFormField(
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             decoration: const InputDecoration(
                               labelText: 'Full Name',
                               labelStyle: TextStyle(color: Colors.white),
@@ -434,7 +434,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                         Container(
                           width: 350,
                           child: TextFormField(
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             keyboardType: TextInputType.phone,
                             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             decoration: const InputDecoration(
@@ -472,23 +472,23 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                             style: const TextStyle(color: Colors.white),
                             decoration:  InputDecoration(
                               labelText: 'Password',
-                              labelStyle: TextStyle(color: Colors.white),
-                              enabledBorder: OutlineInputBorder(
+                              labelStyle: const TextStyle(color: Colors.white),
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.lock,
                                 color: Colors.white,
                               ),
                               suffixIcon: IconButton(
-                                padding: EdgeInsets.only(right: 0.0),
+                                padding: const EdgeInsets.only(right: 0.0),
                                 iconSize: 25.0, // Set the desired icon size
                                 icon: _isObstract
-                                    ? Icon(Icons.visibility_off, color: Colors.white)
-                                    : Icon(Icons.visibility, color: Colors.white),
+                                    ? const Icon(Icons.visibility_off, color: Colors.white)
+                                    : const Icon(Icons.visibility, color: Colors.white),
                                 onPressed: _togglePasswordVisibility,
                               ),
                             ),
@@ -528,9 +528,9 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
 
                             onTap: () => showDialog(
                                 context: context,
-                                builder: (context) => desciptionServices(),
+                                builder: (context) => const desciptionServices(),
                             ),
-                            child: Icon(Icons.report_problem, color: Colors.white,),
+                            child: const Icon(Icons.report_problem, color: Colors.white,),
                           ),
 
                           DropdownButtonFormField<String>(
@@ -674,7 +674,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                           Container(
                             width: 350,
                             child: TextFormField(
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
                                 labelText: 'Business Name',
                                 labelStyle: TextStyle(color: Colors.white),
@@ -711,7 +711,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
 
 
                   Step(
-                    title: Text(
+                    title: const Text(
                       'Add Photos',
                       style: TextStyle(
                         color: Colors.white,
@@ -766,7 +766,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                                 ),
                             ],
                           ),
-                          SizedBox(height: 20,width: 20,),
+                          const SizedBox(height: 20,width: 20,),
                           Row(
                             children: [
                               for (int i = 2; i < 4; i++) // Adjust the number of image slots
@@ -789,12 +789,12 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                                               : Image.asset('assets/add_photo.jpg', fit: BoxFit.cover, width: 120, height: 140,),
                                         ),
                                         Positioned(
+                                          bottom: -8,
+                                          left: 62,
                                           child: IconButton(
                                             onPressed: () => selectImage(i),
                                             icon: const Icon(Icons.add_a_photo, color: Colors.black45, size: 40,),
                                           ),
-                                          bottom: -8,
-                                          left: 62,
                                         ),
                                       ],
                                     ),
