@@ -37,6 +37,9 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
 
 
+  // scrollController at the beginning
+  final ScrollController _scrollController = ScrollController();
+
 
   final TextEditingController _massageController = TextEditingController();
   final ChatService _chatService = ChatService();
@@ -120,22 +123,27 @@ class _ChatPageState extends State<ChatPage> {
   // build massage list
   Widget _buildMassageList() {
     return StreamBuilder(
-        stream: _chatService.getMassages(
+      stream: _chatService.getMassages(
           widget.reciverUserId, _firebaseAuth.currentUser!.uid),
       builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error ${snapshot.error}');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('loading');
-          }
+        if (snapshot.hasError) {
+          return Text('Error ${snapshot.error}');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text('loading');
+        }
 
-          return ListView(
-            children: snapshot.data!.docs
+        // scroll to the bottom
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        });
+
+        return ListView(
+          controller: _scrollController,
+          children: snapshot.data!.docs
               .map((document) => _buildMassageItem(document))
-                .toList(),
-
-          );
+              .toList(),
+        );
       },
     );
   }
