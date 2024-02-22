@@ -87,8 +87,8 @@ class OnbordScreen extends StatelessWidget {
                            padding: const EdgeInsets.all(20.0),
                            fixedSize: const Size(400, 80),
                            textStyle: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-                           primary: Colors.white,
-                           onPrimary: Colors.blue.shade900,
+                           backgroundColor: Colors.white,
+                           foregroundColor: Colors.blue.shade900,
                            elevation: 15,
                            shadowColor: Colors.blue.shade900,
 
@@ -122,8 +122,8 @@ class OnbordScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(20.0),
                             fixedSize: const Size(400, 80),
                             textStyle: const TextStyle(fontSize: 24.5, fontWeight: FontWeight.bold),
-                            primary: Colors.white,
-                            onPrimary: Colors.blue.shade900,
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.blue.shade900,
                             elevation: 15,
                             shadowColor: Colors.blue.shade900,
 
