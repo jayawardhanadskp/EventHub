@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:favorite_button/favorite_button.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
+import '../../model/review_retrive.dart';
 import '../bookings/booking.dart';
 import '../chat/chat_page.dart';
 
@@ -188,6 +191,25 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
     );
   }
 
+  // function to calculate average rating
+  Future<double> _calculateAverageRating() async {
+    QuerySnapshot reviewsSnapshot = await FirebaseFirestore.instance
+        .collection('reviews')
+        .where('serviceProviderId', isEqualTo: widget.userId)
+        .get();
+
+    if (reviewsSnapshot.docs.isNotEmpty) {
+      double totalRating = 0;
+      for (var review in reviewsSnapshot.docs) {
+        totalRating += (review['rating'] as num).toDouble();
+      }
+
+      return totalRating / reviewsSnapshot.docs.length;
+    } else {
+      return 0.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,6 +232,8 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                       snapshot.data!.data();
                   List<String> photoUrls =
                       List<String>.from(serviceProviderData?['photos'] ?? []);
+
+
 
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
@@ -260,7 +284,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back_sharp,
-                                    color: Colors.deepPurple,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -294,7 +318,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                         Container(
                           height: 90,
                           width: double.infinity,
-                          color: Colors.deepPurple[400],
+                          color: Colors.deepPurple[300],
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Row(
@@ -312,18 +336,36 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Name: ${serviceProviderData?['name']}',
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 17),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Owner  ',
+                                          style: const TextStyle(
+                                              color: Colors.white60, fontSize: 17),
+                                        ),
+                                        Text(
+                                          ' ${serviceProviderData?['name']}',
+                                          style: const TextStyle(
+                                              color: Colors.white, fontSize: 17),
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(
-                                      'Service: ${serviceProviderData?['service']}',
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 17),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Service  ',
+                                          style: const TextStyle(
+                                              color: Colors.white60, fontSize: 17),
+                                        ),
+                                        Text(
+                                          '${serviceProviderData?['service']}',
+                                          style: const TextStyle(
+                                              color: Colors.white, fontSize: 17),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -337,21 +379,40 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
+
                               children: [
-                                Text(
-                                  'Business Name: ${serviceProviderData?['business_Name']}',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Description: ${serviceProviderData?['description'] ?? 'Not Added'}',
-                                  style: const TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          ' ${serviceProviderData?['business_Name']}',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        '  Description: ',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Text(
+                                        ' ${serviceProviderData?['description'] ?? 'Not Added'}',
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 Divider(
@@ -367,7 +428,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                         child: TabBar(
                                           controller: _tabController,
                                           labelColor: Colors.deepPurple,
-                                          unselectedLabelColor: Colors.white,
+                                          unselectedLabelColor: Colors.black87,
                                           indicatorColor: Colors.white,
                                           indicatorWeight: 2,
                                           indicatorSize:
@@ -396,35 +457,112 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                             Column(
                                               children: [
                                                 Text(
-                                                  'Pricing: ${serviceProviderData?['pricing_plan_1']}',
+                                                  'Plan: ${serviceProviderData?['pricing_plan_1'] ?? 'Not added'}',
                                                   style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17),
+                                                    color: Colors.black87,
+                                                    fontSize: 17,
+                                                  ),
                                                 ),
                                                 Text(
-                                                  'Pricing: ${serviceProviderData?['pricing_plan_1_price']}',
+                                                  'Pricing: ${serviceProviderData?['pricing_plan_1_price'] ?? 'Not added'}',
                                                   style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17),
+                                                    color: Colors.black87,
+                                                    fontSize: 17,
+                                                  ),
                                                 ),
                                                 SizedBox(height: 10,),
                                                 ElevatedButton(
                                                   onPressed: () {
+                                                    String selectedPlan = serviceProviderData?['pricing_plan_1'] ?? 'Not added';
+                                                    String selectedPrice = serviceProviderData?['pricing_plan_1_price'] ?? 'Not added';
 
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => BookingPage(
-                                                          serviceproviderId: widget.userId,
-                                                          customerId: FirebaseAuth.instance.currentUser!.uid,
-                                                          selectedPlan: serviceProviderData?['pricing_plan_1'],
-                                                          selectedPrice: serviceProviderData?['pricing_plan_1_price'],
+                                                    if (selectedPlan != 'Not added' && selectedPrice != 'Not added') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => BookingPage(
+                                                            serviceproviderId: widget.userId,
+                                                            customerId: FirebaseAuth.instance.currentUser!.uid,
+                                                            selectedPlan: selectedPlan,
+                                                            selectedPrice: selectedPrice,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
+                                                      );
+                                                    } else {
+                                                      Fluttertoast.showToast(msg: 'Cannot Book Pricing plan is not added.',
+                                                          toastLength: Toast.LENGTH_SHORT,
+                                                          gravity: ToastGravity.BOTTOM,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor: Colors.white,
+                                                          textColor: Colors.black,
+                                                          fontSize: 17.0);
+                                                    }
                                                   },
                                                   child: Text(
-                                                    'Book RS ${serviceProviderData?['pricing_plan_1_price']} Plan',
+                                                    'Book RS ${serviceProviderData?['pricing_plan_1_price'] ?? 'Not added'} Plan',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(5.0),
+                                                    ),
+                                                    padding: const EdgeInsets.all(12.0),
+                                                    fixedSize: const Size(380, 60),
+                                                    textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                                                    backgroundColor: Colors.deepPurple[400],
+                                                    foregroundColor: Colors.white,
+                                                    elevation: 10,
+                                                    shadowColor: Colors.blue.shade900,
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  'Pricing: ${serviceProviderData?['pricing_plan_2']  ?? 'Not added'}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 17),
+                                                ),
+                                                Text(
+                                                  'Pricing: ${serviceProviderData?['pricing_plan_2_price']  ?? 'Not added'}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 17),
+                                                ),
+                                                const SizedBox(height: 10,),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    String selectedPlan = serviceProviderData?['pricing_plan_2'] ?? 'Not added';
+                                                    String selectedPrice = serviceProviderData?['pricing_plan_2_price'] ?? 'Not added';
+
+                                                    if (selectedPlan != 'Not added' && selectedPrice != 'Not added') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => BookingPage(
+                                                            serviceproviderId: widget.userId,
+                                                            customerId: FirebaseAuth.instance.currentUser!.uid,
+                                                            selectedPlan: selectedPlan,
+                                                            selectedPrice: selectedPrice,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      Fluttertoast.showToast(msg: 'Cannot Book Pricing plan is not added.',
+                                                          toastLength: Toast.LENGTH_SHORT,
+                                                          gravity: ToastGravity.BOTTOM,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor: Colors.white,
+                                                          textColor: Colors.black,
+                                                          fontSize: 17.0);
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Book RS ${serviceProviderData?['pricing_plan_2_price'] ?? 'Not added'} Plan',
                                                     style: TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
@@ -445,25 +583,48 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                             Column(
                                               children: [
                                                 Text(
-                                                  'Pricing: ${serviceProviderData?['pricing_plan_2']}',
+                                                  'Pricing: ${serviceProviderData?['pricing_plan_3']  ?? 'Not added'}',
                                                   style: const TextStyle(
-                                                      color: Colors.white,
+                                                      color: Colors.black87,
                                                       fontSize: 17),
                                                 ),
                                                 Text(
-                                                  'Pricing: ${serviceProviderData?['pricing_plan_2_price']}',
+                                                  'Pricing: ${serviceProviderData?['pricing_plan_3_price']  ?? 'Not added'}',
                                                   style: const TextStyle(
-                                                      color: Colors.white,
+                                                      color: Colors.black87,
                                                       fontSize: 17),
                                                 ),
                                                 SizedBox(height: 10,),
+
                                                 ElevatedButton(
                                                   onPressed: () {
+                                                    String selectedPlan = serviceProviderData?['pricing_plan_3'] ?? 'Not added';
+                                                    String selectedPrice = serviceProviderData?['pricing_plan_3_price'] ?? 'Not added';
 
-
+                                                    if (selectedPlan != 'Not added' && selectedPrice != 'Not added') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => BookingPage(
+                                                            serviceproviderId: widget.userId,
+                                                            customerId: FirebaseAuth.instance.currentUser!.uid,
+                                                            selectedPlan: selectedPlan,
+                                                            selectedPrice: selectedPrice,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      Fluttertoast.showToast(msg: 'Cannot Book Pricing plan is not added.',
+                                                          toastLength: Toast.LENGTH_SHORT,
+                                                          gravity: ToastGravity.BOTTOM,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor: Colors.white,
+                                                          textColor: Colors.black,
+                                                          fontSize: 17.0);
+                                                    }
                                                   },
                                                   child: Text(
-                                                    'Book RS ${serviceProviderData?['pricing_plan_2_price']} Plan',
+                                                    'Book RS ${serviceProviderData?['pricing_plan_3_price'] ?? 'Not added'} Plan',
                                                     style: TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
@@ -478,22 +639,6 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                     elevation: 10,
                                                     shadowColor: Colors.blue.shade900,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  'Pricing: ${serviceProviderData?['pricing_plan_3']}',
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17),
-                                                ),
-                                                Text(
-                                                  'Pricing: ${serviceProviderData?['pricing_plan_3_price']}',
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17),
                                                 ),
                                               ],
                                             ),
@@ -554,7 +699,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                     Text(
                                       "Selected Day : ${DateFormat('yyyy-MM-dd').format(_focusedDay)}",
                                       style: const TextStyle(
-                                          fontSize: 17, color: Colors.white),
+                                          fontSize: 17, color: Colors.black87),
                                     ),
                                     const SizedBox(
                                       width: 20,
@@ -621,15 +766,14 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                       "Events for ${DateFormat('yyyy-MM-dd').format(_selectedDay!)}:",
                                                       style: const TextStyle(
                                                           fontSize: 17,
-                                                          color: Colors.white),
+                                                          color: Colors.black87),
                                                     ),
                                                     ...selectedDayEvents
                                                         .map((event) => Text(
                                                               event.title,
                                                               style: const TextStyle(
                                                                   fontSize: 18,
-                                                                  color: Colors
-                                                                      .white),
+                                                                  color: Colors.black87),
                                                             )),
                                                   ],
                                                 );
@@ -638,7 +782,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                     'No events for the selected day.',
                                                     style: TextStyle(
                                                         fontSize: 17,
-                                                        color: Colors.white));
+                                                        color: Colors.black87));
                                               }
                                             } else {
                                               return const Text(
@@ -677,6 +821,59 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                             ),
                           ),
                         ),
+                        SizedBox(height: 10,),
+                        FutureBuilder<double>(
+                          future: _calculateAverageRating(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else {
+                              // Display the average rating using RatingBar
+                              double averageRating = snapshot.data ?? 0.0;
+                              String formattedRating = averageRating.toStringAsFixed(2);
+
+
+                              return ListTile(
+                                title: Center(child: Text('Average Rating $formattedRating'
+                                ,style: TextStyle(color: Colors.black45),
+                                ),
+                                ),
+
+                                subtitle: Center(
+                                  child: RatingBar.builder(
+                                    initialRating: averageRating,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    ignoreGestures: true,
+                                    onRatingUpdate: (double value) {},
+                                  ),
+                                ),
+                                onTap: () {
+                                  // Navigate to ServiceProviderReviewsPage when tapped
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ServiceProviderReviewsPage(
+                                        serviceProviderId: widget.userId,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        ),
+
+
                       ],
                     ),
                   );

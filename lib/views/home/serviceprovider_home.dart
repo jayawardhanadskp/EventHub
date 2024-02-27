@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:eventhub/views/chat/inbox_page.dart';
 
+import '../bookings/serviceprovider/bookings_retrive.dart';
 import '../profile/serviceprovider_profile.dart';
 
 class serviceproviderHomePage extends StatefulWidget {
@@ -59,7 +61,7 @@ class _serviceproviderHomePageState extends State<serviceproviderHomePage> {
 
   final List<Widget> _pages = [
     Container(color: Colors.red),
-    Container(color: Colors.blue),
+    ServiceProviderBookingPage(serviceProviderId: FirebaseAuth.instance.currentUser!.uid),
     InboxPage(),
     ServiceProviderProfile(),
   ];
