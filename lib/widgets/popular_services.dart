@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../views/profile/customer_profile.dart';
 
-
-
 class popularServiceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,9 @@ class popularServiceList extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileCustomer()),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileCustomer()),
                   );
                 },
                 child: Padding(
@@ -60,7 +60,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Event Planners',
                           style: TextStyle(
@@ -106,7 +106,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Venues',
                           style: TextStyle(
@@ -152,7 +152,7 @@ class popularServiceList extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 2), // Optional spacing
+                        const SizedBox(height: 2),
                         const Text(
                           'Photographers',
                           style: TextStyle(
@@ -328,7 +328,7 @@ class popularServiceList extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular( 10),
+                          borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/bar-service.jpg',
                             width: 121,

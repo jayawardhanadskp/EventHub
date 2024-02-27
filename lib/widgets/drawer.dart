@@ -133,6 +133,24 @@ class _AppDrawerState extends State<AppDrawer> {
               },
             ),
 
+            ListTile(
+              leading: Icon(
+                Icons.shopping_bag,
+                color: Colors.white, size: 20,
+              ),
+              title: Text('B O O K I N G S',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                ),),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+
+                Navigator.pushNamed(context, '/bookings_customer');
+              },
+            ),
+
 
 
 
