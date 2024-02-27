@@ -1,15 +1,19 @@
 
+import 'package:eventhub/views/bookings/cutomer/bookings_customer.dart';
 import 'package:eventhub/views/chat/inbox_page.dart';
 import 'package:eventhub/views/home/customer_home.dart';
 import 'package:eventhub/views/onbord_screen.dart';
 import 'package:eventhub/views/profile/customer_profile.dart';
 import 'package:eventhub/views/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
 
 
 
@@ -30,11 +34,18 @@ Future main() async {
         projectId: "eventhub-2beb6",
       ),
 
+
+
     );
+
   } else {
     // for (iOS, Android)
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+
+    );
+
   }
+
 
 
 
@@ -65,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/services_all':(context) => ServicesAll(),
         '/customer_favorites' : (context) => FavoritesPage(),
         '/inbox_customer' : (context) => InboxPage(),
+        '/bookings_customer' : (context) => CustomerBookingPage(customerId: FirebaseAuth.instance.currentUser!.uid),
 
 
       },
