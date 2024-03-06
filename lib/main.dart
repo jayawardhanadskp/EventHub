@@ -19,6 +19,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'model/customer_favorites.dart';
 import 'model/services_all.dart';
+import 'views/events/customer/finished_customer.dart';
+import 'views/events/customer/upcoming_customer.dart';
 
 
 Future main() async {
@@ -68,7 +70,10 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
+
       home:  SplachScreen(),
+
+      // customer home drawer only
       routes: {
         '/onbord_screen':(context) => OnbordScreen(),
         '/customer_home':(context) => customerHomePage(),
@@ -77,7 +82,8 @@ class MyApp extends StatelessWidget {
         '/customer_favorites' : (context) => FavoritesPage(),
         '/inbox_customer' : (context) => InboxPage(),
         '/bookings_customer' : (context) => CustomerBookingPage(customerId: FirebaseAuth.instance.currentUser!.uid),
-
+        '/upcoming_customer' : (context) => UpcomingEventCustomerPage(),
+        '/finished_customer' : (context) => FinishedEventsCustomerPage(),
 
       },
     );
