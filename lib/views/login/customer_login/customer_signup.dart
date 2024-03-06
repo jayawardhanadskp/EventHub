@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,9 +14,6 @@ import '../../onbord_screen.dart';
 import 'customer_login.dart';
 import 'package:eventhub/controller/image_pick_reg.dart';
 
-
-
-
 class customerSignUpPage extends StatefulWidget {
   const customerSignUpPage({super.key});
 
@@ -25,10 +21,7 @@ class customerSignUpPage extends StatefulWidget {
   State<customerSignUpPage> createState() => _customerSignUpPageState();
 }
 
-
-
 class _customerSignUpPageState extends State<customerSignUpPage> {
-
   bool _isSigninUp = false;
 
   // firebase
@@ -53,13 +46,12 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
 
   // image picker
   Uint8List? _image;
-  void selectImage() async{
+  void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
     setState(() {
       _image = img;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,38 +61,31 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
         width: double.infinity,
         child: SingleChildScrollView(
           child: Form(
-
             child: Column(
-
               children: [
-
                 const SizedBox(
                   height: 10,
                 ),
-
                 InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  const OnbordScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const OnbordScreen()),
                     );
                   },
                   child: Image.asset('assets/logo_home.jpg'),
                 ),
-
-
-
                 const Text(
                   "A Service Seeker ? Just Fill It ! ",
-                  style: TextStyle(color: Colors.white,
+                  style: TextStyle(
+                    color: Colors.white,
                     fontSize: 19,
                   ),
                 ),
-
                 const SizedBox(
                   height: 1,
                 ),
-
                 Container(
                   width: 120,
                   height: 120,
@@ -119,35 +104,34 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                   ),
                   child: Stack(
                     children: [
-                      _image != null ?
-                          CircleAvatar(
-                            radius: 60,
-                            backgroundImage: MemoryImage(_image! ),
-                          )
-                      :
-                      const CircleAvatar(
-                        radius: 60,
-                        backgroundImage: AssetImage('assets/avatar.png'),
-                      ),
+                      _image != null
+                          ? CircleAvatar(
+                              radius: 60,
+                              backgroundImage: MemoryImage(_image!),
+                            )
+                          : const CircleAvatar(
+                              radius: 60,
+                              backgroundImage: AssetImage('assets/avatar.png'),
+                            ),
                       Positioned(
-                          bottom: -10,
+                        bottom: -10,
                         left: 65,
-                          child: IconButton(
-                            onPressed: selectImage,
-                            icon: const Icon(Icons.add_a_photo,
-                              color: Colors.white, size: 40,),
+                        child: IconButton(
+                          onPressed: selectImage,
+                          icon: const Icon(
+                            Icons.add_a_photo,
+                            color: Colors.white,
+                            size: 40,
                           ),
+                        ),
                       )
                     ],
                   ),
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
-
                 Container(
-
                   width: 350,
                   child: TextFormField(
                     style: const TextStyle(color: Colors.white),
@@ -165,22 +149,18 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                         color: Colors.white,
                       ),
                     ),
-
                     controller: _usernameController,
-
                     validator: (value) {
-                      if (value == null || value.isEmpty){
+                      if (value == null || value.isEmpty) {
                         return "Please Enter Your Name";
-                      } return null;
+                      }
+                      return null;
                     },
-
                   ),
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
-
                 Container(
                   width: 350,
                   child: TextFormField(
@@ -200,14 +180,11 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                       ),
                     ),
                     controller: _emailController,
-
                   ),
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
-
                 Container(
                   width: 350,
                   child: TextFormField(
@@ -230,7 +207,8 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                         padding: const EdgeInsets.only(right: 0.0),
                         iconSize: 25.0, // Set the desired icon size
                         icon: _isObstract
-                            ? const Icon(Icons.visibility_off, color: Colors.white)
+                            ? const Icon(Icons.visibility_off,
+                                color: Colors.white)
                             : const Icon(Icons.visibility, color: Colors.white),
                         onPressed: _togglePasswordVisibility,
                       ),
@@ -238,11 +216,9 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                     controller: _passwordController,
                   ),
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
-
                 Container(
                   width: 350,
                   child: TextFormField(
@@ -265,20 +241,18 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                         padding: const EdgeInsets.only(right: 0.0),
                         iconSize: 25.0, // Set the desired icon size
                         icon: _isObstract
-                            ? const Icon(Icons.visibility_off, color: Colors.white)
+                            ? const Icon(Icons.visibility_off,
+                                color: Colors.white)
                             : const Icon(Icons.visibility, color: Colors.white),
                         onPressed: _togglePasswordVisibility,
                       ),
                     ),
                     controller: _confirmPassController,
-
                   ),
                 ),
-
                 const SizedBox(
                   height: 30,
                 ),
-
                 ElevatedButton(
                   onPressed: _signUp,
                   style: ElevatedButton.styleFrom(
@@ -287,97 +261,93 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                     ),
                     padding: const EdgeInsets.all(15.0),
                     fixedSize: const Size(230, 60),
-                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.blue.shade900,
                     elevation: 10,
                     shadowColor: Colors.blue.shade900,
                   ),
-
-                  child: _isSigninUp ? CircularProgressIndicator(color: Colors.blue.shade900,):
-                  const Text("SIGN UP"),
+                  child: _isSigninUp
+                      ? CircularProgressIndicator(
+                          color: Colors.blue.shade900,
+                        )
+                      : const Text("SIGN UP"),
                 ),
-
                 const SizedBox(
                   height: 5,
                 ),
-
                 const Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Row(
                     children: [
-                      Expanded(child: Divider(
-                        thickness: 0.9,
-                        color: Colors.white,
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.9,
+                          color: Colors.white,
+                        ),
                       ),
-                      ),
-
                       Padding(
                         padding: EdgeInsets.all(10.0),
-                        child: Text("Or Continue With",
-                          style: TextStyle(color: Colors.white),),
+                        child: Text(
+                          "Or Continue With",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-
-                      Expanded(child: Divider(
-                        thickness: 0.9,
-                        color: Colors.white,
-                      ),
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.9,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
-
-
                     InkWell(
                       onTap: () => _signInWithGoogle(),
                       borderRadius: BorderRadius.circular(20),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.asset('assets/google-logo-for_button.jpg',
+                        child: Image.asset(
+                          'assets/google-logo-for_button.jpg',
                           height: 70,
                         ),
                       ),
                     ),
-
-
-
                     const SizedBox(
                       width: 30,
                     ),
-
                     InkWell(
                       onTap: _signInWithFacebook,
                       borderRadius: BorderRadius.circular(20),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.asset('assets/facebook-f-logo-for-button.jpg',
+                        child: Image.asset(
+                          'assets/facebook-f-logo-for-button.jpg',
                           height: 70,
-
                         ),
                       ),
                     ),
                   ],
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
-
-
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  const CustomerLogin()),
+                      MaterialPageRoute(
+                          builder: (context) => const CustomerLogin()),
                     );
                   },
-                  child: const Text('Have an account? Log In',
-                    style: TextStyle(color: Colors.white, fontSize: 17),),
+                  child: const Text(
+                    'Have an account? Log In',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
                 ),
               ],
             ),
@@ -389,7 +359,6 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
 
   // signup
   void _signUp() async {
-
     setState(() {
       _isSigninUp = true;
     });
@@ -399,10 +368,9 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
     String password = _passwordController.text;
     String confirmpass = _confirmPassController.text;
 
-
-
     try {
-      User? user = await _auth.signUpWithEmailAndPassword( email, username, password, _image!);
+      User? user = await _auth.signUpWithEmailAndPassword(
+          email, username, password, _image!);
 
       setState(() {
         _isSigninUp = false;
@@ -423,41 +391,43 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
       }
 
       if (user != null) {
-        Fluttertoast.showToast(msg: 'User Is Successfully Created ',
+        Fluttertoast.showToast(
+            msg: 'User Is Successfully Created ',
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
             fontSize: 17.0);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  customerHomePage()),
+          MaterialPageRoute(builder: (context) => customerHomePage()),
         );
       } else {
-        Fluttertoast.showToast(msg: 'Check All The Fields Are Filled',
+        Fluttertoast.showToast(
+            msg: 'Check All The Fields Are Filled',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.white,
-            textColor: Colors.red,
+            textColor: Colors.black,
             fontSize: 17.0);
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error: $e ',
+      Fluttertoast.showToast(
+          msg: 'Error: $e ',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.white,
-          textColor: Colors.red,
+          textColor: Colors.black,
           fontSize: 17.0);
     }
-
-
   }
 
   //password visibility button
-  void _togglePasswordVisibility() => setState(() => _isObstract = !_isObstract);
+  void _togglePasswordVisibility() =>
+      setState(() => _isObstract = !_isObstract);
 
   // to get google and facebook sign in to save data on firestore
   void saveUserDataToFirestore(User? user) async {
@@ -471,7 +441,7 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
         'email': email,
         'name': username,
         'photo': imageUrl,
-
+        'signupTimestamp': FieldValue.serverTimestamp(),
       });
     }
   }
@@ -481,17 +451,20 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
     try {
-      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken,
         );
 
-        UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+        UserCredential authResult =
+            await FirebaseAuth.instance.signInWithCredential(credential);
         User? user = authResult.user;
 
         saveUserDataToFirestore(user);
@@ -520,14 +493,14 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
       final LoginResult result = await FacebookAuth.instance.login();
 
       if (result.status == LoginStatus.success) {
-        final AuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
+        final AuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.token);
         await FirebaseAuth.instance.signInWithCredential(credential);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => customerHomePage()),
         );
       } else if (result.status == LoginStatus.cancelled) {
-
         Fluttertoast.showToast(
           msg: 'Facebook login cancelled',
           toastLength: Toast.LENGTH_SHORT,
@@ -538,7 +511,6 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
           fontSize: 17.0,
         );
       } else {
-
         Fluttertoast.showToast(
           msg: 'Error: ${result.message}',
           toastLength: Toast.LENGTH_SHORT,
@@ -550,7 +522,6 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
         );
       }
     } catch (e) {
-
       Fluttertoast.showToast(
         msg: 'Error: $e',
         toastLength: Toast.LENGTH_SHORT,
@@ -562,6 +533,4 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
       );
     }
   }
-
-
 }

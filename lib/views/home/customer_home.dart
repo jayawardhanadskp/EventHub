@@ -59,7 +59,7 @@ class _customerHomePageState extends State<customerHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.deepPurple[50],
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -69,7 +69,7 @@ class _customerHomePageState extends State<customerHomePage> {
             pinned: true,
             snap: false,
             leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: Colors.white,
                 size: 34,
@@ -81,7 +81,7 @@ class _customerHomePageState extends State<customerHomePage> {
             title: Text(
               'E V E N T  H U B',
               style: GoogleFonts.rubik(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.w600,
@@ -90,7 +90,14 @@ class _customerHomePageState extends State<customerHomePage> {
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                color: Colors.deepPurple[600],
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(colors: [Color (0xFF5E35B1),Color (0xFFB39DDB) ],
+                  begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    stops: [0.0,1.0],
+                    tileMode: TileMode.clamp
+                  )
+                ),
               ),
             ),
           ),
@@ -103,15 +110,15 @@ class _customerHomePageState extends State<customerHomePage> {
               Padding(
                 padding: const EdgeInsets.only(right: 10, left: 10,top: 5),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ServicesAll()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ServicesAll()));
                     },
                     child: Container(
                       height: 70,
                       width: double.infinity,
-                      color: Colors.white,
+                      color: Colors.deepPurple[50],
                       child: const Row(
                         children: [
                           Padding(
@@ -137,7 +144,7 @@ class _customerHomePageState extends State<customerHomePage> {
             child: Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Container(
-                color: Colors.deepPurple[50],
+                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: popularServiceList(), // popular service list
@@ -146,19 +153,6 @@ class _customerHomePageState extends State<customerHomePage> {
             ),
           ),
 
-
-          SliverToBoxAdapter(
-            
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-
-                ],
-              ),
-            ),
-          ),
 
 
 
@@ -173,7 +167,7 @@ class _customerHomePageState extends State<customerHomePage> {
             child: Container(
               height: 400,
               color: Colors.deepPurple[300],
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 color: Colors.deepPurple[300],
                 height: 400,

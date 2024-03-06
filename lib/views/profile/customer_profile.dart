@@ -31,10 +31,10 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
       if (user.providerData.isNotEmpty) {
         var providerData = user.providerData.first;
         if (providerData.providerId == 'google.com') {
-          // If the user signed in with Google
+          //  Google
           _googleUser = await GoogleSignIn().signInSilently();
         } else if (providerData.providerId == 'facebook.com') {
-          // If the user signed in with Facebook
+          //  Facebook
           _facebookAccessToken = await FacebookAuth.instance.accessToken;
         }
       }
@@ -73,7 +73,7 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
                   );
                 } else if (snapshot.hasData) {
                   Map<String, dynamic>? userData = snapshot.data!.data();
-                  String profilePhotoUrl = userData?['profilePicture'] ?? '';
+                  String profilePhotoUrl = userData?['photo'] ?? '';
                   String name = _getName(userData);
                   String email = _getEmail(userData);
 
@@ -138,13 +138,13 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
     if (_user != null && _user!.providerData.isNotEmpty) {
       var providerData = _user!.providerData.first;
       if (providerData.providerId == 'google.com' && _googleUser != null) {
-        return _googleUser!.displayName ?? userData?['fullName'] ?? 'N/A';
+        return _googleUser!.displayName ?? userData?['name'] ?? 'N/A';
       } else if (providerData.providerId == 'facebook.com' && _facebookAccessToken != null) {
 
-        return userData?['fullName'] ?? 'N/A';
+        return userData?['name'] ?? 'N/A';
       }
     }
-    return userData?['fullName'] ?? 'N/A';
+    return userData?['name'] ?? 'N/A';
   }
 
   String _getEmail(Map<String, dynamic>? userData) {
@@ -154,9 +154,9 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
         return _googleUser!.email ?? userData?['email'] ?? 'N/A';
       } else if (providerData.providerId == 'facebook.com' && _facebookAccessToken != null) {
         
-        return userData?['email'] ?? 'N/A';
+        return userData?['email'] ?? '';
       }
     }
-    return userData?['email'] ?? 'N/A';
+    return userData?['email'] ?? '';
   }
 }
