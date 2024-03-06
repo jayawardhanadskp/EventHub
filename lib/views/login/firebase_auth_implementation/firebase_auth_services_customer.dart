@@ -34,6 +34,7 @@ class FirebaseAuthServicesCustomer {
         'email': email,
         'name': username,
         'photo': imageUrl,
+        'signupTimestamp': FieldValue.serverTimestamp(),
       });
 
       return credential.user;
