@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../model/review.dart';
+import '../../../model/review/review.dart';
 
 class CustomerBookingPage extends StatefulWidget {
   final String customerId;
@@ -45,8 +45,17 @@ class _CustomerBookingPageState extends State<CustomerBookingPage> {
           }
 
           if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text('You have no bookings.'),
+            return  Center(
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100,),
+                    Image.asset('assets/nobookings.png', scale: 2,),
+                    const SizedBox(height: 10,),
+                    const Text('You have no bookings.', style: TextStyle(fontSize: 25, ),),
+                  ],
+                ),
+              ),
             );
           }
 

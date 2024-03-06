@@ -25,6 +25,7 @@ class _ServiceProviderBookingPageState
     _bookingsStream = FirebaseFirestore.instance
         .collection('bookings')
         .where('serviceproviderId', isEqualTo: widget.serviceProviderId)
+
         .snapshots();
   }
 
@@ -32,7 +33,8 @@ class _ServiceProviderBookingPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Service Provider Bookings'),
+        title: const Center(child:  Text('My Bookings')),
+        automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _bookingsStream,
@@ -47,8 +49,17 @@ class _ServiceProviderBookingPageState
 
 
           if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text('No bookings available.'),
+            return  Center(
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100,),
+                    Image.asset('assets/nobookings.png', scale: 2,),
+                    const SizedBox(height: 10,),
+                    const Text('You have no bookings.', style: TextStyle(fontSize: 25, ),),
+                  ],
+                ),
+              ),
             );
           }
 
@@ -76,32 +87,54 @@ class _ServiceProviderBookingPageState
 
                   var customerData = customerSnapshot.data!.data() as Map<String, dynamic>;
 
-                  return ListTile(
-                    leading: CircleAvatar(
-
-                      backgroundImage: NetworkImage(customerData['photo']),
-                    ),
-                    title: Text('Customer Name: ${customerData['name']}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Selected Plan: ${bookingData['selectedPlan']}'),
-
-                      ],
-                    ),
-                    onTap: () {
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BookingDetailsPage(
-                            bookingData: bookingData,
-                            customerData: customerData,
-                          ),
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 15.0,right: 15.0,top: 10.0,bottom: 10.0,),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.deepPurple.withOpacity(0.4),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3)
+                          )
+                        ]
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.deepPurple),
+                          borderRadius: BorderRadius.circular(8)
                         ),
-                      );
-                    },
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(customerData['photo'] ?? ''),
+                          ),
+                          title: Text('Customer Name: ${customerData['name']}'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Selected Plan: ${bookingData['selectedPlan']}'),
+                              Text('Date: ${bookingData['selectedDay']}')
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookingDetailsPage(
+                                  bookingData: bookingData,
+                                  customerData: customerData,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   );
+
                 },
               );
             },
@@ -113,7 +146,7 @@ class _ServiceProviderBookingPageState
 }
 
 
-class BookingDetailsPage extends StatelessWidget {
+class BookingDetailsPage extends StatefulWidget {
   final Map<String, dynamic> bookingData;
   final Map<String, dynamic> customerData;
 
@@ -123,11 +156,17 @@ class BookingDetailsPage extends StatelessWidget {
   });
 
   @override
+  State<BookingDetailsPage> createState() => _BookingDetailsPageState();
+}
+
+class _BookingDetailsPageState extends State<BookingDetailsPage> {
+  @override
   Widget build(BuildContext context) {
-    DateTime selectedDate = DateTime.parse(bookingData['selectedDay']);
+    DateTime selectedDate = DateTime.parse(widget.bookingData['selectedDay']);
     DateTime currentDate = DateTime.now();
 
     bool isDateInPast = selectedDate.isBefore(currentDate);
+    bool isNextDay = selectedDate.isAtSameMomentAs(currentDate.add(Duration(days: 1)));
 
     return Scaffold(
       appBar: AppBar(
@@ -136,25 +175,43 @@ class BookingDetailsPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Customer Name: ${customerData['name']}'),
-          Text('Selected Plan: ${bookingData['selectedPlan']}'),
-          Text('Selected Day: ${bookingData['selectedDay']}'),
-          Text('Selected Time: ${bookingData['selectedTime']}'),
-          Text('Address: ${bookingData['address']}'),
-          Text('Notes: ${bookingData['notes']}'),
-          if (isDateInPast)
-            ElevatedButton(
-              onPressed: () {
+          Text('Customer Name: ${widget.customerData['name']}'),
+          Text('Selected Plan: ${widget.bookingData['selectedPlan']}'),
+          Text('Selected Day: ${widget.bookingData['selectedDay']}'),
+          Text('Selected Time: ${widget.bookingData['selectedTime']}'),
+          Text('Address: ${widget.bookingData['address']}'),
+          Text('Notes: ${widget.bookingData['notes'] ?? ''}'),
+          Text('Status: ${widget.bookingData['status']}'),
 
-                FirebaseFirestore.instance
-                    .collection('bookings')
-                    .doc(bookingData['bookingId']) // Replace 'bookingId' with your actual field name
-                    .update({'status': 'success'});
+          // Display the "Finish" button only if the selected day has passed and it's the next day
+          if (isDateInPast && !isNextDay && widget.bookingData['status'] != 'finished') ...[
+            ElevatedButton(
+              onPressed: () async {
+                String documentId = widget.bookingData['id'] ?? '';
+                print('Document ID: $documentId');
+
+                try {
+                  // Get the reference to the document
+                  DocumentReference bookingRef = FirebaseFirestore.instance.collection('bookings').doc(documentId);
+
+                  // Update the 'status' field
+                  await bookingRef.update({'status': 'finished'});
+
+                  print('Booking status updated successfully.');
+                } catch (e) {
+                  print('Error updating booking status: $e');
+                }
+
+                Navigator.pop(context);
               },
-              child: const Text('Done'),
-            )
-          else
-            Text('Status: ${bookingData['status'] ?? 'Unknown'}'),
+
+
+
+
+              child: const Text('Finish'),
+            ),
+
+          ],
         ],
       ),
     );
