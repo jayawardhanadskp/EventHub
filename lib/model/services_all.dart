@@ -219,7 +219,7 @@ class _ServicesAllState extends State<ServicesAll> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.deepPurple[200],
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Stack(
                         children: [
@@ -228,14 +228,14 @@ class _ServicesAllState extends State<ServicesAll> {
                               Container(
                                 width: 170,
                                 height: double.infinity,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8.0),
                                     bottomLeft: Radius.circular(8.0),
                                   ),
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     bottomLeft: Radius.circular(8),
                                   ),
@@ -310,8 +310,8 @@ class _ServicesAllState extends State<ServicesAll> {
                               future: _favoriteStatusFuture,
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
-                                  // Return a loading indicator if still waiting for data
-                                  return CircularProgressIndicator();
+
+                                  return const CircularProgressIndicator();
                                 } else {
 
                                   if (snapshot.hasError) {
@@ -369,7 +369,13 @@ class _ServicesAllState extends State<ServicesAll> {
           )
               : SliverToBoxAdapter(
             child: Center(
-              child: Text('No results found.'),
+              child: Column(
+                children: [
+                  const SizedBox(height: 100,),
+                  Image.asset('assets/noservice.jpg', scale: 2.5,),
+                  const Text('No services', style: TextStyle(fontSize: 25, ),),
+                ],
+              ),
             ),
           ),
         ],
