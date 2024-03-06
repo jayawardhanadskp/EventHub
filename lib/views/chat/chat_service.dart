@@ -62,17 +62,19 @@ class ChatService extends ChangeNotifier {
       var chatRoomDoc = await _firestore.collection('chat_rooms').doc(chatRoomId).get();
 
       if (chatRoomDoc.exists) {
-        // update existing chat room with new participants
+        // update existing chat room with new participants and last message
         Set<String> existingParticipants = Set<String>.from(chatRoomDoc['participants']);
         existingParticipants.add(reciverId);
 
         await _firestore.collection('chat_rooms').doc(chatRoomId).update({
           'participants': existingParticipants.toList(),
+          'lastMessage': newMassage.toMap(), // save the last message
         });
       } else {
-        // create new chat room with participants
+        // create new chat room with participants and last message
         await _firestore.collection('chat_rooms').doc(chatRoomId).set({
           'participants': ids,
+          'lastMessage': newMassage.toMap(), // save the last message
         });
       }
 
@@ -85,6 +87,7 @@ class ChatService extends ChangeNotifier {
       print('Error sending message: $e');
     }
   }
+
 
 
   Future<String> uploadImage(File imageFile) async {

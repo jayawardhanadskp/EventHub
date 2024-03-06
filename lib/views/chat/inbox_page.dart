@@ -48,7 +48,7 @@ class _InboxPageState extends State<InboxPage> {
       }
     } catch (error) {
       print('Error fetching user data for user ID $userId: $error');
-     
+
       return null;
     }
   }
@@ -133,6 +133,22 @@ class _InboxPageState extends State<InboxPage> {
               child: Text('Error: ${snapshot.error}'),
             );
           }
+
+          if (snapshot.data!.docs.isEmpty) {
+            return  Center(
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100,),
+                    Image.asset('assets/nochats.jpg', scale: 2.5,),
+                    const SizedBox(height: 10,),
+                    const Text('No chats', style: TextStyle(fontSize: 25, ),),
+                  ],
+                ),
+              ),
+            );
+          }
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
