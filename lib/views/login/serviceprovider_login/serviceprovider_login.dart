@@ -261,7 +261,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.white,
-            textColor: Colors.red,
+            textColor: Colors.black,
             fontSize: 17.0);
       }
     } catch (e) {
@@ -270,7 +270,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.white,
-          textColor: Colors.red,
+          textColor: Colors.black,
           fontSize: 17.0);
     }
   }
@@ -278,90 +278,7 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
   //password visibility button
   void _togglePasswordVisibility() => setState(() => _isObstract = !_isObstract);
 
-  // sign in with google
-  _signInWithGoogle()async{
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-    try{
-      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication = await
-        googleSignInAccount.authentication;
-
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken,
-        );
-        await FirebaseAuth.instance.signInWithCredential(credential);
-  //      Navigator.push(
-  //        context,
-  //        MaterialPageRoute(builder: (context) =>  customerHomePage()),
-  //      );
-      }
-
-    } catch(e) {
-
-      Fluttertoast.showToast(msg: 'Error: $e ',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.red,
-          fontSize: 17.0);
-    }
-  }
-
-
-
-// Sign in with Facebook
-  Future<void> _signInWithFacebook() async {
-    try {
-      final LoginResult result = await FacebookAuth.instance.login();
-
-      if (result.status == LoginStatus.success) {
-        final AuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
-        await FirebaseAuth.instance.signInWithCredential(credential);
-  //      Navigator.push(
-  //        context,
-  //        MaterialPageRoute(builder: (context) => customerHomePage()),
-  //      );
-      } else if (result.status == LoginStatus.cancelled) {
-
-        Fluttertoast.showToast(
-          msg: 'Facebook login cancelled',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.red,
-          fontSize: 17.0,
-        );
-      } else {
-
-        Fluttertoast.showToast(
-          msg: 'Error: ${result.message}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.red,
-          fontSize: 17.0,
-        );
-      }
-    } catch (e) {
-
-      Fluttertoast.showToast(
-        msg: 'Error: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.white,
-        textColor: Colors.red,
-        fontSize: 17.0,
-      );
-    }
-  }
 
 
 }

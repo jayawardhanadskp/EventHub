@@ -155,6 +155,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                     'business_Name' : _buisnessName,
                     'photos': imageUrls,
                     'photo': imageUrl,
+                    'signupTimestamp': FieldValue.serverTimestamp(),
                   });
 
                   Fluttertoast.showToast(msg: 'User Is Successfully Created ',

@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/review_retrive.dart';
+import '../../model/review/review_retrive.dart';
 import '../bookings/booking.dart';
 import '../chat/chat_page.dart';
 
@@ -338,9 +338,9 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   children: [
                                     Row(
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Owner  ',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: Colors.white60, fontSize: 17),
                                         ),
                                         Text(
@@ -355,9 +355,9 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                     ),
                                     Row(
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Service  ',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: Colors.white60, fontSize: 17),
                                         ),
                                         Text(
@@ -396,14 +396,14 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                         ),
                                       ),
                                       const SizedBox(height: 10),
-                                      Text(
+                                      const Text(
                                         '  Description: ',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 18,
                                             color: Colors.black87,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      SizedBox(height: 7,),
+                                      const SizedBox(height: 7,),
                                       Text(
                                         ' ${serviceProviderData?['description'] ?? 'Not Added'}',
                                         style: const TextStyle(
@@ -470,7 +470,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                     fontSize: 17,
                                                   ),
                                                 ),
-                                                SizedBox(height: 10,),
+                                                const SizedBox(height: 10,),
                                                 ElevatedButton(
                                                   onPressed: () {
                                                     String selectedPlan = serviceProviderData?['pricing_plan_1'] ?? 'Not added';
@@ -500,7 +500,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                   },
                                                   child: Text(
                                                     'Book RS ${serviceProviderData?['pricing_plan_1_price'] ?? 'Not added'} Plan',
-                                                    style: TextStyle(color: Colors.white),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
                                                     shape: RoundedRectangleBorder(
@@ -563,7 +563,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                   },
                                                   child: Text(
                                                     'Book RS ${serviceProviderData?['pricing_plan_2_price'] ?? 'Not added'} Plan',
-                                                    style: TextStyle(color: Colors.white),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
                                                     shape: RoundedRectangleBorder(
@@ -594,7 +594,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                       color: Colors.black87,
                                                       fontSize: 17),
                                                 ),
-                                                SizedBox(height: 10,),
+                                                const SizedBox(height: 10,),
 
                                                 ElevatedButton(
                                                   onPressed: () {
@@ -625,7 +625,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                   },
                                                   child: Text(
                                                     'Book RS ${serviceProviderData?['pricing_plan_3_price'] ?? 'Not added'} Plan',
-                                                    style: TextStyle(color: Colors.white),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
                                                     shape: RoundedRectangleBorder(
@@ -821,12 +821,12 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                             ),
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         FutureBuilder<double>(
                           future: _calculateAverageRating(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error: ${snapshot.error}'));
                             } else {
@@ -837,7 +837,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
 
                               return ListTile(
                                 title: Center(child: Text('Average Rating $formattedRating'
-                                ,style: TextStyle(color: Colors.black45),
+                                ,style: const TextStyle(color: Colors.black45),
                                 ),
                                 ),
 
@@ -848,8 +848,8 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,
                                     itemCount: 5,
-                                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                    itemBuilder: (context, _) => Icon(
+                                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    itemBuilder: (context, _) => const Icon(
                                       Icons.star,
                                       color: Colors.amber,
                                     ),
@@ -858,7 +858,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                   ),
                                 ),
                                 onTap: () {
-                                  // Navigate to ServiceProviderReviewsPage when tapped
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
