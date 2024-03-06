@@ -120,13 +120,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites'),
+        title: const Text('Favorites'),
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: FirebaseFirestore.instance.collection('customers').doc(currentUser.uid).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -139,7 +139,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
             if (favorites.isEmpty) {
               return Center(
-                child: Text('No Favorites'),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100,),
+                    Image.asset('assets/favorite.png', scale: 5,),
+                    const Text('No favorites', style: TextStyle(fontSize: 25, ),),
+                  ],
+                ),
               );
             }
 
@@ -150,7 +156,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   future: FirebaseFirestore.instance.collection('service_providers').doc(favorites[index]).get(),
                   builder: (context, providerSnapshot) {
                     if (providerSnapshot.connectionState == ConnectionState.waiting) {
-                      return ListTile(
+                      return const ListTile(
                         title: Text('Loading...'),
                       );
                     } else if (providerSnapshot.hasError) {
@@ -179,7 +185,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.deepPurple[200],
-                              borderRadius: BorderRadius.all(Radius.circular(12)),
+                              borderRadius: const BorderRadius.all(Radius.circular(12)),
                             ),
                             child: Stack(
                               children: [
@@ -188,14 +194,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                     Container(
                                       width: 170,
                                       height: double.infinity,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(8.0),
                                           bottomLeft: Radius.circular(8.0),
                                         ),
                                       ),
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(8),
                                           bottomLeft: Radius.circular(8),
                                         ),
@@ -268,12 +274,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState == ConnectionState.waiting) {
 
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       } else {
 
                                         if (snapshot.hasError) {
                                           print('Error: ${snapshot.error}');
-                                          return Text('Error loading favorite status');
+                                          return const Text('Error loading favorite status');
                                         } else {
 
                                           List<String> favorites = snapshot.data ?? [];
@@ -310,7 +316,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         ),
                       );
                     } else {
-                      return ListTile(
+                      return const ListTile(
                         title: Text('No Data'),
                       );
                     }
@@ -319,7 +325,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               },
             );
           } else {
-            return Center(
+            return const Center(
               child: Text('No Favorites'),
             );
           }
