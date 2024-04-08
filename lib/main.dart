@@ -17,6 +17,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 
 
+import 'model/app_feedbacks.dart';
 import 'model/customer_favorites.dart';
 import 'model/services_all.dart';
 import 'views/events/customer/finished_customer.dart';
@@ -84,6 +85,8 @@ class MyApp extends StatelessWidget {
         '/bookings_customer' : (context) => CustomerBookingPage(customerId: FirebaseAuth.instance.currentUser!.uid),
         '/upcoming_customer' : (context) => UpcomingEventCustomerPage(),
         '/finished_customer' : (context) => FinishedEventsCustomerPage(),
+        '/app_feedbacks' : (context) => FeedbackPage(),
+
 
       },
     );
