@@ -11,6 +11,7 @@ import 'package:eventhub/widgets/drawer.dart';
 import '../../model/services_all.dart';
 import '../../widgets/banner_customer_home.dart';
 import '../../widgets/popular_services.dart';
+import '../../widgets/show_feedbacks.dart';
 
 
 class customerHomePage extends StatefulWidget {
@@ -165,18 +166,34 @@ class _customerHomePageState extends State<customerHomePage> {
 
           SliverToBoxAdapter(
             child: Container(
-              height: 400,
-              color: Colors.deepPurple[300],
+
+              color: Colors.deepPurple[50],
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                color: Colors.deepPurple[300],
-                height: 400,
+              child: Flexible(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Users Feedbacks',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple,
+                          ),
+                        ),
+                      ),
 
-
-
+                      ApprovedFeedbackPage(),
+                    ],
+                  )
+                ),
               ),
             ),
           ),
+
 
           SliverToBoxAdapter(
             child: Padding(
@@ -195,7 +212,7 @@ class _customerHomePageState extends State<customerHomePage> {
 
         ],
       ),
-      drawer: AppDrawer(), // Use the AppDrawer widget
+      drawer: const AppDrawer(), // Use the AppDrawer widget
     );
   }
 }
