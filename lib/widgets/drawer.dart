@@ -202,7 +202,9 @@ class _AppDrawerState extends State<AppDrawer> {
 
                 Navigator.pushNamed(context, '/upcoming_customer');
               },
-            ),ListTile(
+            ),
+
+            ListTile(
               leading: const Icon(
                 Icons.event_available,
                 color: Colors.white,
@@ -222,6 +224,28 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.pushNamed(context, '/finished_customer');
               },
             ),
+
+            ListTile(
+              leading: const Icon(
+                Icons.star_rate_outlined,
+                color: Colors.white,
+                size: 20,
+              ),
+              title: const Text(
+                'R A T E   &   F E E D B A C S',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.pushNamed(context, '/app_feedbacks');
+              },
+            ),
+
             ListTile(
               leading: const Icon(
                 Icons.logout_rounded,
