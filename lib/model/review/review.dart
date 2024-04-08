@@ -12,12 +12,14 @@ class ReviewPage extends StatefulWidget {
   final Map<String, dynamic> serviceProviderData;
   final String customerId;
   final String serviceProviderId;
+  final String bookingId;
 
   const ReviewPage({
     required this.bookingData,
     required this.serviceProviderData,
     required this.customerId,
     required this.serviceProviderId,
+    required this.bookingId,
   });
 
   @override
@@ -43,7 +45,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
     for (int i = 0; i < files.length; i++) {
       if (files[i] != null) {
-        Reference ref = _storage.ref().child('review_photos').child(uid).child('reciew$i.jpg');
+        Reference ref = _storage.ref().child('review_photos').child(uid).child('review$i.jpg');
         UploadTask uploadTask = ref.putData(files[i]!);
         TaskSnapshot snapshot = await uploadTask;
         String downloadUrl = await snapshot.ref.getDownloadURL();
@@ -58,7 +60,10 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Leave a Review'),
+        title: const Text('Leave a Review', style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.deepPurple,
+        iconTheme: IconThemeData(color: Colors.white), // Set back button color
+
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -66,7 +71,9 @@ class _ReviewPageState extends State<ReviewPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Service Provider: ${widget.serviceProviderData['name']}'),
+              Text('${widget.serviceProviderData['business_Name']}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
+              SizedBox(height: 8,),
+
               Text('Booked Plan: ${widget.bookingData['selectedPlan']}'),
               const SizedBox(height: 16),
               const Text('Rating:'),
@@ -96,16 +103,31 @@ class _ReviewPageState extends State<ReviewPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
+
+              const SizedBox(height: 16),
+              _buildPhotosSection(),
+
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   await _submitReview();
                   Navigator.pop(context);
                 },
+
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  fixedSize: const Size(200, 60),
+                  textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                  backgroundColor: Colors.deepPurple[400],
+                  foregroundColor: Colors.white,
+                  elevation: 10,
+                  shadowColor: Colors.blue.shade900,
+                ),
                 child: const Text('Submit Review'),
               ),
-              const SizedBox(height: 16),
-              _buildPhotosSection(),
             ],
           ),
         ),
@@ -197,7 +219,9 @@ class _ReviewPageState extends State<ReviewPage> {
     try {
       List<String> photoUrls = await uploadImagesToStorage(widget.serviceProviderId, _photos);
 
+      // Save the review data along with the booking ID
       await FirebaseFirestore.instance.collection('reviews').add({
+        'bookingId': widget.bookingId,
         'serviceProviderId': widget.serviceProviderId,
         'customerId': widget.customerId,
         'rating': _rating,
@@ -217,6 +241,7 @@ class _ReviewPageState extends State<ReviewPage> {
       ));
     }
   }
+
 
   @override
   void dispose() {
