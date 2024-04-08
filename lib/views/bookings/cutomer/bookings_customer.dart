@@ -86,28 +86,56 @@ class _CustomerBookingPageState extends State<CustomerBookingPage> {
                   serviceProviderSnapshot.data?.data() as Map<String, dynamic>;
 
                   var serviceProviderBuisnessName =
-                      serviceProviderData?['business_Name'] ?? 'Unknown';
+                      serviceProviderData?['business_Name'] ?? '';
                   var serviceProviderPhoto = serviceProviderData?['photo'] ?? '';
-                  var bookedPlan = bookingData['selectedPlan'] ?? 'Unknown';
+                  var bookedPlan = bookingData['selectedPlan'] ?? '';
+                  var bookedDate = bookingData['selectedDay'] ?? '';
+                  var status = bookingData['status'] ?? '';
 
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(serviceProviderPhoto),
-                    ),
-                    title: Text('$serviceProviderBuisnessName'),
-                    subtitle: Text('Booked Plan: $bookedPlan'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomerBookingDetailsPage(
-                            bookingData: bookingData,
-                            serviceProviderData: serviceProviderData,
-                            serviceProviderId: serviceProviderId,
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.deepPurple.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
                           ),
+                        ],
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(serviceProviderPhoto),
                         ),
-                      );
-                    },
+                        title: Text('$serviceProviderBuisnessName'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Booked Plan: $bookedPlan'),
+                            Text('Booked Date: $bookedDate')
+                          ],
+                        ),
+                        trailing: Text('$status', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12.5),),
+
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CustomerBookingDetailsPage(
+                                bookingData: bookingData,
+                                serviceProviderData: serviceProviderData,
+                                serviceProviderId: serviceProviderId,
+                                bookingId: snapshot.data!.docs[index].id,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   );
                 },
               );
@@ -123,11 +151,13 @@ class CustomerBookingDetailsPage extends StatelessWidget {
   final Map<String, dynamic> bookingData;
   final Map<String, dynamic> serviceProviderData;
   final String serviceProviderId;
+  final String bookingId;
 
   const CustomerBookingDetailsPage({
     required this.bookingData,
     required this.serviceProviderData,
     required this.serviceProviderId,
+    required this.bookingId,
   });
 
   @override
@@ -136,34 +166,181 @@ class CustomerBookingDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Booking Details'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Service Provider: ${serviceProviderData['name']}'),
-          Text('Booked Plan: ${bookingData['selectedPlan']}'),
-          Text('Selected Day: ${bookingData['selectedDay'] ?? 'Unknown'}'),
-          Text('Selected Time: ${bookingData['selectedTime'] ?? 'Unknown'}'),
-          Text('Address: ${bookingData['address'] ?? 'Unknown'}'),
-          Text('Notes: ${bookingData['notes'] ?? 'Unknown'}'),
-          Text('Status: ${bookingData['status'] ?? 'Unknown'}'),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.deepPurple.withOpacity(0.4),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              )
+            ],
+          ),
+          child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.deepPurple),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black54.withOpacity(0.4),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            )
+                          ],
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: Text('Status ', style: TextStyle(color: Colors.white),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 8.0, left: 8.0, right: 8.0),
+                                child: Text(
+                                  '${bookingData['status']}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
 
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReviewPage(
-                    bookingData: bookingData,
-                    serviceProviderData: serviceProviderData,
-                    customerId: FirebaseAuth.instance.currentUser!.uid,
-                    serviceProviderId: serviceProviderId,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54.withOpacity(0.4),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Service Provider',
+                              style: TextStyle(color: Colors.black45)),
+                          Text('${serviceProviderData['business_Name']}',
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 7),
+                          const Text('Selected Plan',
+                              style: TextStyle(color: Colors.black45)),
+                          Text('${bookingData['selectedPlan']}',
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 7),
+                          const Text('Date',
+                              style: TextStyle(color: Colors.black45)),
+                          Text('${bookingData['selectedDay']}',
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 7),
+                          const Text('Time',
+                              style: TextStyle(color: Colors.black45)),
+                          Text('${bookingData['selectedTime']}',
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 7),
+                          const Text('Address',
+                              style: TextStyle(color: Colors.black45)),
+                          Text('${bookingData['address']}',
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 7),
+                          const Text('Notes',
+                              style: TextStyle(color: Colors.black45)),
+                          Text('${bookingData['notes'] ?? ''}',
+                              style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 7),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              );
-            },
-            child: const Text('Review'),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReviewPage(
+                            bookingData: bookingData,
+                            serviceProviderData: serviceProviderData,
+                            customerId: FirebaseAuth.instance.currentUser!.uid,
+                            serviceProviderId: serviceProviderId,
+                            bookingId: bookingId,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+
+                      fixedSize: const Size(150, 55),
+                      textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black54,
+                      elevation: 10,
+                      shadowColor: Colors.blue.shade900,
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.star, color: Colors.yellow,),
+                        SizedBox(width: 5,),
+                        Text('Review'),
+                      ],
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
