@@ -6,6 +6,7 @@ class Massage {
   final String massage;
   final Timestamp timestamp;
   String? imageUrl;
+  bool seen;
 
   Massage({
     required this.senderId,
@@ -14,6 +15,7 @@ class Massage {
     required this.massage,
     required this.timestamp,
     this.imageUrl,
+    this.seen = false,
   });
 
   // convert to map
@@ -25,6 +27,7 @@ class Massage {
       'massage' : massage,
       'timestamp' : timestamp,
       'imageUrl' : imageUrl,
+      'seen': seen,
     };
   }
 }

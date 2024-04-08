@@ -14,26 +14,29 @@ class _InboxPageState extends State<InboxPage> {
 
   Future<DocumentSnapshot<Map<String, dynamic>>?> _getUserData(String userId) async {
     try {
-      // find the user is customer or service_provider
+      // find the user is a customer or service_provider
       String collectionName = '';
 
-      // check user is customer
-      DocumentSnapshot<Map<String, dynamic>> customerSnapshot = await _firestore.collection('customers').doc(userId).get();
+      // check if the user is a customer
+      DocumentSnapshot<Map<String, dynamic>> customerSnapshot =
+      await _firestore.collection('customers').doc(userId).get();
       if (customerSnapshot.exists) {
         collectionName = 'customers';
       }
 
-      // if not customer, check if user is service provider
+      // if not a customer, check if the user is a service provider
       if (collectionName.isEmpty) {
-        DocumentSnapshot<Map<String, dynamic>> serviceProviderSnapshot = await _firestore.collection('service_providers').doc(userId).get();
+        DocumentSnapshot<Map<String, dynamic>> serviceProviderSnapshot =
+        await _firestore.collection('service_providers').doc(userId).get();
         if (serviceProviderSnapshot.exists) {
           collectionName = 'service_providers';
         }
       }
 
       if (collectionName.isNotEmpty) {
-        // get user data from collection
-        DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.collection(collectionName).doc(userId).get();
+        // get user data from the collection
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _firestore.collection(collectionName).doc(userId).get();
         if (snapshot.exists) {
           print('User data found for user ID $userId');
           return snapshot;
@@ -52,7 +55,6 @@ class _InboxPageState extends State<InboxPage> {
       return null;
     }
   }
-
 
   Widget _buildChatItem(QueryDocumentSnapshot room) {
     List<String> participants = List<String>.from(room['participants']);
@@ -90,6 +92,41 @@ class _InboxPageState extends State<InboxPage> {
 
         print('User Data: $userData');
 
+        // check if last message is image URL
+        bool hasImage = room['lastMessage']['imageUrl'] != null;
+
+        // check if current user is sender or receiver
+        bool isSender = room['lastMessage']['senderId'] == _firebaseAuth.currentUser!.uid;
+
+        String subtitle = isSender
+            ? 'Last message goes here'
+            : hasImage
+            ? 'New message: Photo'
+            : 'New message: ${room['lastMessage']['massage']}';
+
+        // count unseen messages
+        int unseenCount = room['lastMessage']['seen'] ? 0 : 1;
+
+        _markMessagesAsSeen(String chatRoomId) {
+          _firestore
+              .collection('chat_rooms')
+              .doc(chatRoomId)
+              .collection('massages')
+              .where('seen', isEqualTo: false)
+              .get()
+              .then((unseenMessages) {
+            unseenMessages.docs.forEach((doc) {
+              // update each message individually
+              _firestore
+                  .collection('chat_rooms')
+                  .doc(chatRoomId)
+                  .collection('massages')
+                  .doc(doc.id)
+                  .update({'seen': true});
+            });
+          });
+        }
+
         return ListTile(
           onTap: () {
             Navigator.push(
@@ -103,18 +140,29 @@ class _InboxPageState extends State<InboxPage> {
                 ),
               ),
             );
+            // mark all messages as seen when entering chat
+            _markMessagesAsSeen(chatRoomId);
           },
           leading: CircleAvatar(
             radius: 25,
             backgroundImage: NetworkImage(userData['photo'] ?? ''),
           ),
-          title: Text(userData['name'] ?? 'Unknown'),
-          subtitle: const Text('Last message goes here'),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(userData['name'] ?? 'Unknown'),
+              unseenCount > 0 ? Text('New message: $unseenCount') : SizedBox.shrink(),
+            ],
+          ),
+          subtitle: Text(subtitle),
         );
+
       },
     );
-
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,17 +182,19 @@ class _InboxPageState extends State<InboxPage> {
             );
           }
 
-          if (snapshot.data!.docs.isEmpty) {
-            return  Center(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 100,),
-                    Image.asset('assets/nochats.jpg', scale: 2.5,),
-                    const SizedBox(height: 10,),
-                    const Text('No chats', style: TextStyle(fontSize: 25, ),),
-                  ],
-                ),
+          if (snapshot.data != null && snapshot.data!.docs.isEmpty) {
+
+            return Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 100),
+                  Image.asset('assets/nochats.jpg', scale: 2.5),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'No chats',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                ],
               ),
             );
           }
