@@ -136,7 +136,7 @@ class _ServiceProviderProfileEditState
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: const InputDecoration(
-              hintText: 'Enter pricing in LKR for plan 1',
+              hintText: 'Enter pricing in USD for plan 1',
             ),
           ),
 
@@ -154,7 +154,7 @@ class _ServiceProviderProfileEditState
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: const InputDecoration(
-              hintText: 'Enter pricing in LKR for plan 2',
+              hintText: 'Enter pricing in USD for plan 2',
             ),
           ),
 
@@ -172,7 +172,7 @@ class _ServiceProviderProfileEditState
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: const InputDecoration(
-              hintText: 'Enter pricing in LKR for plan 3',
+              hintText: 'Enter pricing in USD for plan 3',
             ),
           ),
           const SizedBox(height: 32.0),

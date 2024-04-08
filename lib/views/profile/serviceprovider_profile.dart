@@ -417,7 +417,7 @@ with SingleTickerProviderStateMixin {
                                       ),
                                       padding: const EdgeInsets.all(15.0),
                                       fixedSize: const Size(380, 60),
-                                      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                                       backgroundColor: Colors.deepPurple[400],
                                       foregroundColor: Colors.white,
                                       elevation: 10,
