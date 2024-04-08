@@ -64,7 +64,6 @@ class _UpcomingEventsServiceProviderPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: StreamBuilder<QuerySnapshot>(
         stream: _upcomingEventsStream,
         builder: (context, snapshot) {
@@ -76,26 +75,29 @@ class _UpcomingEventsServiceProviderPageState
             return const CircularProgressIndicator();
           }
 
-
           var upcomingEvents = snapshot.data!.docs
               .where((event) {
             var eventDate =
-            event['selectedDay'] as String; // Adjust the field name
+            event['selectedDay'] as String;
             return DateTime.parse(eventDate).isAfter(DateTime.now());
           })
               .toList();
 
           if (upcomingEvents.isEmpty) {
             return Center(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 100,),
-                    Image.asset('assets/upcomingevent.jpg', scale: 2,),
-                    const SizedBox(height: 10,),
-                    const Text('No upcoming events', style: TextStyle(fontSize: 25, ),),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/upcomingevent.jpg',
+                    scale: 2,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'No upcoming events',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                ],
               ),
             );
           }
@@ -106,6 +108,11 @@ class _UpcomingEventsServiceProviderPageState
               var eventData =
               upcomingEvents[index].data() as Map<String, dynamic>;
               var customerId = eventData['customerId'];
+
+              // calculate remaining days
+              var eventDate =
+              DateTime.parse(eventData['selectedDay'] as String);
+              var remainingDays = eventDate.difference(DateTime.now()).inDays;
 
               return FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
@@ -129,8 +136,13 @@ class _UpcomingEventsServiceProviderPageState
 
                   return ListTile(
                     title: Text('Customer: $customerName'),
-                    subtitle: Text('Event Date: ${eventData['selectedDay']}'),
-
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Event Date: ${eventData['selectedDay']}'),
+                        Text('Remaining Days: $remainingDays'),
+                      ],
+                    ),
                   );
                 },
               );
@@ -141,6 +153,7 @@ class _UpcomingEventsServiceProviderPageState
     );
   }
 }
+
 
 
 class FinishedEventsServiceProviderPage extends StatefulWidget {
