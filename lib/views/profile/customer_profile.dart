@@ -17,11 +17,12 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
   late User? _user;
   late GoogleSignInAccount? _googleUser;
   late AccessToken? _facebookAccessToken;
+  late Future<void> _userFuture;
 
   @override
   void initState() {
     super.initState();
-    _getUserDetails();
+    _userFuture = _getUserDetails();
   }
 
   Future<void> _getUserDetails() async {
@@ -57,68 +58,87 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
         backgroundColor: Colors.deepPurple[600],
         elevation: 0,
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              future: FirebaseFirestore.instance.collection('customers').doc(_user?.uid).get(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else if (snapshot.hasData) {
-                  Map<String, dynamic>? userData = snapshot.data!.data();
-                  String profilePhotoUrl = userData?['photo'] ?? '';
-                  String name = _getName(userData);
-                  String email = _getEmail(userData);
+      body: FutureBuilder(
+        future: _userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            return _buildProfile();
+          }
+        },
+      ),
+    );
+  }
 
-                  return ClipPath(
-                    clipper: ClipperCusProfile(),
-                    child: Container(
-                      color: Colors.deepPurple[600],
-                      height: 300,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(height: 20),
-                              CircleAvatar(
-                                radius: 80,
-                                backgroundImage: _getImageUrl(profilePhotoUrl),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'Name: $name',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Email: $email',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
+  Widget _buildProfile() {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            future: FirebaseFirestore.instance.collection('customers').doc(_user?.uid).get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else if (snapshot.hasData) {
+                Map<String, dynamic>? userData = snapshot.data!.data();
+                String profilePhotoUrl = userData?['photo'] ?? '';
+                String name = _getName(userData);
+                String email = _getEmail(userData);
+
+                return ClipPath(
+                  clipper: ClipperCusProfile(),
+                  child: Container(
+                    color: Colors.deepPurple[600],
+                    height: 300,
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20),
+                            CircleAvatar(
+                              radius: 80,
+                              backgroundImage: _getImageUrl(profilePhotoUrl),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Name: $name',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Email: $email',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  );
-                } else {
-                  return const Center(
-                    child: Text('No Data'),
-                  );
-                }
-              },
-            ),
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: Text('No Data'),
+                );
+              }
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -140,7 +160,6 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
       if (providerData.providerId == 'google.com' && _googleUser != null) {
         return _googleUser!.displayName ?? userData?['name'] ?? 'N/A';
       } else if (providerData.providerId == 'facebook.com' && _facebookAccessToken != null) {
-
         return userData?['name'] ?? 'N/A';
       }
     }
@@ -153,7 +172,6 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
       if (providerData.providerId == 'google.com' && _googleUser != null) {
         return _googleUser!.email ?? userData?['email'] ?? 'N/A';
       } else if (providerData.providerId == 'facebook.com' && _facebookAccessToken != null) {
-        
         return userData?['email'] ?? '';
       }
     }
