@@ -24,6 +24,7 @@ class _CustomerBookingPageState extends State<CustomerBookingPage> {
     _customerBookingsStream = FirebaseFirestore.instance
         .collection('bookings')
         .where('customerId', isEqualTo: widget.customerId)
+        .orderBy('timestamp', descending: true)
         .snapshots();
   }
 

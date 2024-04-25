@@ -28,7 +28,7 @@ class _ServiceProviderBookingPageState
     _bookingsStream = FirebaseFirestore.instance
         .collection('bookings')
         .where('serviceproviderId', isEqualTo: widget.serviceProviderId)
-
+        .orderBy('timestamp', descending: true)
         .snapshots();
   }
 

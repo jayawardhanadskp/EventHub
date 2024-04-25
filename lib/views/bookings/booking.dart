@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -29,7 +30,7 @@ class BookingPage extends StatefulWidget {
 
 class _BookingPageState extends State<BookingPage> {
 
-  // Store selected values
+  // store selected values
   String selectedDayText = '';
   String selectedTimeText = '';
   String address = '';
@@ -37,12 +38,12 @@ class _BookingPageState extends State<BookingPage> {
 
   // Stepper variables
   int _currentStep = 0;
-  bool _completedStep1 = false; // Flag to check if Step 1 is completed
+  bool _completedStep1 = false;
 
   // Calendar variables
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  Map<DateTime, List<Event>> events = {}; // Placeholder for events
+  Map<DateTime, List<Event>> events = {};
 
   // Form Key for Step 1
   final _step1FormKey = GlobalKey<FormState>();
@@ -71,11 +72,11 @@ class _BookingPageState extends State<BookingPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize Firebase Messaging and request notification permission
+    // initialize Firebase Messaging and request notification permission
     _initFirebaseMessaging();
   }
 
-  // Function to initialize Firebase Messaging and request permission
+  // function to initialize Firebase Messaging and request permission
   Future<void> _initFirebaseMessaging() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
@@ -96,23 +97,30 @@ class _BookingPageState extends State<BookingPage> {
           .doc(serviceproviderId)
           .get();
 
-      if (serviceProviderSnapshot.exists) {
+      print('Service Provider Snapshot: $serviceProviderSnapshot');
+
+      if (serviceProviderSnapshot.exists && serviceProviderSnapshot.data() != null) {
         // Get FCM token from the service provider data
-        String serviceProviderToken = serviceProviderSnapshot['fcmToken'];
+        String? serviceProviderToken = serviceProviderSnapshot.data()!['fcmToken'];
 
-        // Send notification
-        await FirebaseMessaging.instance.subscribeToTopic('service_provider_topic');
+        print('FCM Token: $serviceProviderToken');
 
-        await FirebaseMessaging.instance.sendMessage(
-          // Use the FCM token as the 'to' parameter
-          to: serviceProviderToken,
-          data: <String, String>{
-            'title': 'New Booking!',
-            'body': 'You have a new booking from a customer.',
-          },
-        );
+        if (serviceProviderToken != null) {
+          // Send notification
+          await FirebaseMessaging.instance.subscribeToTopic('service_provider_topic');
 
-        await FirebaseMessaging.instance.unsubscribeFromTopic('service_provider_topic');
+          await FirebaseMessaging.instance.sendMessage(
+            to: serviceProviderToken,
+            data: <String, String>{
+              'title': 'New Booking!',
+              'body': 'You have a new booking from a customer.',
+            },
+          );
+
+          await FirebaseMessaging.instance.unsubscribeFromTopic('service_provider_topic');
+        } else {
+          print('FCM Token is null for service provider with ID: $serviceproviderId');
+        }
       } else {
         print('Service provider not found with ID: $serviceproviderId');
       }
@@ -120,6 +128,8 @@ class _BookingPageState extends State<BookingPage> {
       print('Error sending notification: $e');
     }
   }
+
+
 
 
 
@@ -233,6 +243,7 @@ class _BookingPageState extends State<BookingPage> {
                                 !events.containsKey(day) &&
                                 _getEventsForDay(day).isEmpty &&
                                 _currentStep == 0,
+
                             focusedDay: _focusedDay,
                             firstDay: DateTime.utc(2024, 2, 1),
                             lastDay: DateTime.utc(2030, 3, 14),
@@ -273,9 +284,10 @@ class _BookingPageState extends State<BookingPage> {
                   height: 15,
                 ),
                 Text(
-                  "Selected Day: ${_selectedDay != null ? DateFormat('yyyy-MM-dd').format(_selectedDay!) : 'No day selected'}",
+                  "Selected Day: ${_selectedDay != null && !_getEventsForDay(_selectedDay!).isNotEmpty ? DateFormat('yyyy-MM-dd').format(_selectedDay!) : 'No day selected'}",
                   style: const TextStyle(fontSize: 17),
                 ),
+
                 const SizedBox(
                   height: 15,
                 ),
@@ -376,7 +388,7 @@ class _BookingPageState extends State<BookingPage> {
               children: [
                 const Text('Step 2 - Payment Gateway'),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -388,9 +400,7 @@ class _BookingPageState extends State<BookingPage> {
 
                     double totalAmount = originalPrice + serviceCharge;
 
-                    // Send FCM message to service provider
-                    await sendNotificationToServiceProvider(
-                        widget.serviceproviderId);
+
 
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => PaypalCheckout(
@@ -454,12 +464,14 @@ class _BookingPageState extends State<BookingPage> {
                             'status': 'waiting',
                           });
 
+                          // Send FCM message to service provider
+                          await sendNotificationToServiceProvider(widget.serviceproviderId);
 
-                          Navigator.of(context).pushReplacement(
+                        /*  Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => ConfirmationPage(),
                             ),
-                          );
+                          ); */
                         },
                         onError: (error) {
                           print("onError: $error");
@@ -471,7 +483,18 @@ class _BookingPageState extends State<BookingPage> {
                       ),
                     ));
                   },
-                  child: Text('PayPal'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Lottie.network('https://lottie.host/a22da8aa-c68c-4965-b697-67779a134a02/hixW9cz6zq.json',
+                      height: 50
+                    ),
+                  )
                 )
               ],
             ),
