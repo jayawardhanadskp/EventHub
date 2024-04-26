@@ -190,7 +190,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 size: 20,
               ),
               title: const Text(
-                'U P C O M I N G    E V N T S',
+                'U P C O M I N G    E V E N T S',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
@@ -211,7 +211,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 size: 20,
               ),
               title: const Text(
-                'F I N I S H E D    E V N T S',
+                'F I N I S H E D    E V E N T S',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
@@ -222,6 +222,48 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.pop(context);
 
                 Navigator.pushNamed(context, '/finished_customer');
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(
+                Icons.list_alt,
+                color: Colors.white,
+                size: 20,
+              ),
+              title: const Text(
+                'P E R S O N A L   C A L E N D E R',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.pushNamed(context, '/customer_todo_events');
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(
+                Icons.calculate,
+                color: Colors.white,
+                size: 20,
+              ),
+              title: const Text(
+                'B U D G E T   T R A C K E R',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.pushNamed(context, '/customer_budget_calculator');
               },
             ),
 
@@ -243,6 +285,27 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.pop(context);
 
                 Navigator.pushNamed(context, '/app_feedbacks');
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(
+                Icons.report_problem,
+                color: Colors.white,
+                size: 20,
+              ),
+              title: const Text(
+                'R E P O R T   P R O B L E M S',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.pushNamed(context, '/report');
               },
             ),
 
