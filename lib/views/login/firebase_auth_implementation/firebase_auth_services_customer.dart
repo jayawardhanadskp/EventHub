@@ -68,7 +68,26 @@ class FirebaseAuthServicesCustomer {
   Future<User?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return credential.user;
+
+      // check if user exists in customers collection
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot = await _firestore.collection('customers').doc(credential.user!.uid).get();
+
+      if (userSnapshot.exists) {
+
+        return credential.user;
+      } else {
+        // user not found in the customers collection
+        await _auth.signOut();
+        Fluttertoast.showToast(
+          msg: 'Invalid Email Or Password ',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 17.0,
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         Fluttertoast.showToast(
@@ -77,7 +96,7 @@ class FirebaseAuthServicesCustomer {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.white,
-          textColor: Colors.red,
+          textColor: Colors.black,
           fontSize: 17.0,
         );
       } else {
@@ -86,13 +105,12 @@ class FirebaseAuthServicesCustomer {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          textColor: Colors.red,
+          textColor: Colors.black,
           fontSize: 17.0,
         );
       }
     }
     return null;
   }
-
 
 }
