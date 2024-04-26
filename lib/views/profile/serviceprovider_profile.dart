@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
+import '../onbord_screen.dart';
+
 
 
 
@@ -102,10 +104,26 @@ with SingleTickerProviderStateMixin {
       backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Center(
-          child:  Text(
-            'My Profile',
-            style: TextStyle(color: Colors.white),
+        title: Center(
+          child:  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'My Profile',
+                style: TextStyle(color: Colors.white),
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OnbordScreen()));
+                },
+                alignment: Alignment.topRight,
+              ),
+            ],
           ),
         ),
         backgroundColor: Colors.deepPurple[600],

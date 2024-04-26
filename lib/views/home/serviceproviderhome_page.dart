@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../widgets/notifications.dart';
 import '../events/serviceprovider/events.dart';
 import '../onbord_screen.dart';
 
@@ -125,16 +127,14 @@ class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
 
 
                   ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const OnbordScreen()));
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage() ));
                     },
-                    alignment: Alignment.topRight,
+                    child: const Icon(Icons.notifications_active,
+                      color: Colors.white,
+                      size: 34,
+                    ),
                   ),
                 ],
               ),
@@ -165,6 +165,7 @@ class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
                     );
                   },
                   child: Container(
+
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [
@@ -182,18 +183,22 @@ class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
                         border: Border.all(color: Colors.deepPurple),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      padding: const EdgeInsets.all(16),
-                      child: const Column(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                             children: [
                               Text(
                                 'Take a look at upcoming events',
                                 style: TextStyle(fontSize: 18),
                               ),
-                              Icon(Icons.arrow_forward, size: 25,)
+                              Lottie.network('https://lottie.host/5960b764-469c-4b63-a996-b74207fc50cd/FkvGe26RWa.json',
+                                height: 100,
+                                width: 126
+                              ),
+
                             ],
                           ),
                           SizedBox(height: 8),

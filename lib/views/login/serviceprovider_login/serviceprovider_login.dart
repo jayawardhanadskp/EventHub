@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventhub/views/login/serviceprovider_login/serviceprovider_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import '../../home/serviceprovider_home.dart';
 import '../../profile/serviceprovider_profile.dart';
 import '../../onbord_screen.dart';
 import '../firebase_auth_implementation/firebase_auth_services_customer.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class ServiceProviderLogin extends StatefulWidget {
   const ServiceProviderLogin({super.key});
@@ -226,9 +227,9 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
     );
   }
 
+
   // SignIn Method
   void _signIn() async {
-
     setState(() {
       _isSigning = true;
     });
@@ -237,43 +238,83 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
     String password = _passwordController.text;
 
     try {
-      User? user = await _auth.signInWithEmailAndPassword(email, password);
 
-      setState(() {
-        _isSigning = false;
-      });
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-      if (user != null) {
-        Fluttertoast.showToast(msg: 'User is Successfully SigndIn',
+      // check if userCredential is not null and the user is authenticated
+      if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
+        // get the user's document from service_providers collection
+        DocumentSnapshot<Map<String, dynamic>> serviceProviderSnapshot = await FirebaseFirestore.instance
+            .collection('service_providers')
+            .doc(userCredential.user!.uid)
+            .get();
+
+        // check if the document exists
+        if (serviceProviderSnapshot.exists) {
+
+          // Initialize Firebase Messaging and get token
+          await FirebaseMessaging.instance.requestPermission();
+          String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+          // Update FCM token in Firestore
+          await FirebaseFirestore.instance
+              .collection('service_providers')
+              .doc(userCredential.user!.uid)
+              .update({'fcmToken': fcmToken});
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const serviceproviderHomePage()),
+          );
+        } else {
+
+          Fluttertoast.showToast(
+            msg: 'Invalid user credentials',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.white,
             textColor: Colors.black,
-            fontSize: 17.0);
-        Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const serviceproviderHomePage())
-        );
-
+            fontSize: 17.0,
+          );
+        }
       } else {
-        Fluttertoast.showToast(msg: 'Some Error Occurred',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-            fontSize: 17.0);
-      }
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error: $e ',
+
+        Fluttertoast.showToast(
+          msg: 'Invalid user credentials',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.white,
           textColor: Colors.black,
-          fontSize: 17.0);
+          fontSize: 17.0,
+        );
+      }
+
+      setState(() {
+        _isSigning = false;
+      });
+    } catch (e) {
+
+      Fluttertoast.showToast(
+        msg: 'Error: $e ',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+        fontSize: 17.0,
+      );
+
+      setState(() {
+        _isSigning = false;
+      });
     }
   }
+
 
   //password visibility button
   void _togglePasswordVisibility() => setState(() => _isObstract = !_isObstract);

@@ -723,10 +723,10 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                             .get(),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.waiting) {
-                                            // Loading state
+
                                             return const CircularProgressIndicator();
                                           } else if (snapshot.hasError) {
-                                            // Error state
+
                                             return Text(
                                                 'Error: ${snapshot.error}');
                                           } else if (snapshot.hasData) {
@@ -739,7 +739,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                       serviceProviderData[
                                                           'events']);
 
-                                              // Get events for the selected day
+                                              // get events for selected day
                                               List<Event> selectedDayEvents =
                                                   [];
                                               String selectedDayString =
@@ -757,7 +757,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                 }).toList();
                                               }
 
-                                              // Display events
+                                              // display events
                                               if (selectedDayEvents
                                                   .isNotEmpty) {
                                                 return Column(
@@ -830,7 +830,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error: ${snapshot.error}'));
                             } else {
-                              // Display the average rating using RatingBar
+                              // display the average rating using RatingBar
                               double averageRating = snapshot.data ?? 0.0;
                               String formattedRating = averageRating.toStringAsFixed(2);
 
