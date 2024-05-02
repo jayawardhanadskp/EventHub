@@ -29,7 +29,7 @@ class ApprovedFeedbackPage extends StatelessWidget {
                   builder: (context, userSnapshot) {
                     if (userSnapshot.connectionState == ConnectionState.waiting) {
                       return Container(
-                        width: 200, // Set a fixed width for each feedback card
+                        width: 200,
                         child: ListTile(
                           title: Text('Loading...'),
                         ),
@@ -37,7 +37,7 @@ class ApprovedFeedbackPage extends StatelessWidget {
                     }
                     if (!userSnapshot.hasData) {
                       return Container(
-                        width: 200, // Set a fixed width for each feedback card
+                        width: 200,
                         child: ListTile(
                           title: Text('Unknown'),
                         ),
