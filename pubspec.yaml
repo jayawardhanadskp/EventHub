@@ -75,6 +75,9 @@ dependencies:
 
   flutter_rating_bar: ^4.0.1
 
+  flutter_simple_calculator: ^2.2.5
+  lottie: ^3.0.0
+
 
 
 
