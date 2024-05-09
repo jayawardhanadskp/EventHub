@@ -1,4 +1,5 @@
 
+import 'package:eventhub/controller/firebase_api.dart';
 import 'package:eventhub/views/bookings/cutomer/bookings_customer.dart';
 import 'package:eventhub/views/chat/inbox_page.dart';
 import 'package:eventhub/views/home/customer_home.dart';
@@ -18,7 +19,10 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 
 import 'model/app_feedbacks.dart';
+import 'model/customer_budget_calculator.dart';
 import 'model/customer_favorites.dart';
+import 'model/customer_todo_events.dart';
+import 'model/report/report.dart';
 import 'model/services_all.dart';
 import 'views/events/customer/finished_customer.dart';
 import 'views/events/customer/upcoming_customer.dart';
@@ -27,29 +31,17 @@ import 'views/events/customer/upcoming_customer.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // for web Firebase
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "AIzaSyA71UrBPlvvzsW2VIT9MAfhxUPNY_dTQjk",
-        appId: "1:951945595901:web:f7f2c165726610e89da794",
-        messagingSenderId: "951945595901",
-        projectId: "eventhub-2beb6",
-      ),
+  // initialize Firebase
+    await Firebase.initializeApp();
 
-
-
-    );
-
-  } else {
-    // for (iOS, Android)
-    await Firebase.initializeApp(
-
-    );
-
-  }
-
-
+  // Request permission for receiving notifications
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  print('User granted permission: ${settings.authorizationStatus}');
 
 
   runApp( MyApp());
@@ -86,6 +78,9 @@ class MyApp extends StatelessWidget {
         '/upcoming_customer' : (context) => UpcomingEventCustomerPage(),
         '/finished_customer' : (context) => FinishedEventsCustomerPage(),
         '/app_feedbacks' : (context) => FeedbackPage(),
+        '/customer_todo_events' : (context) => CustomerTodoCalendar(),
+        '/customer_budget_calculator' : (context) => BudgetCalculatePage(),
+        '/report' : (context) => ReportProblemPage(),
 
 
       },
