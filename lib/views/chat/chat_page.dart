@@ -212,12 +212,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
 
-
-
-
-
-
-
   // build massage input
   Widget _buildMassageInput() {
     return Column(
@@ -269,7 +263,5 @@ class _ChatPageState extends State<ChatPage> {
       ],
     );
   }
-
-
 
 }
