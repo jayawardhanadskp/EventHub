@@ -112,7 +112,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
                   // email validator
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Plese Enter Email';
+                      return 'Please Enter Email';
                     } else {
                       return null;
                     }
@@ -161,9 +161,6 @@ class _CustomerLoginState extends State<CustomerLogin> {
               ),
               ElevatedButton(
                 onPressed: _signIn,
-                child: _isSigning
-                    ? CircularProgressIndicator(color: Colors.blue.shade900)
-                    : const Text("LOGIN"),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -176,6 +173,9 @@ class _CustomerLoginState extends State<CustomerLogin> {
                   elevation: 10,
                   shadowColor: Colors.blue.shade900,
                 ),
+                child: _isSigning
+                    ? CircularProgressIndicator(color: Colors.blue.shade900)
+                    : const Text("LOGIN"),
               ),
 
 
@@ -410,10 +410,6 @@ class _CustomerLoginState extends State<CustomerLogin> {
       );
     }
   }
-
-
-
-
 
 
 // Sign in with Facebook
