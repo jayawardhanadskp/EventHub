@@ -205,7 +205,7 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                       ),
                       suffixIcon: IconButton(
                         padding: const EdgeInsets.only(right: 0.0),
-                        iconSize: 25.0, // Set the desired icon size
+                        iconSize: 25.0,
                         icon: _isObstract
                             ? const Icon(Icons.visibility_off,
                                 color: Colors.white)
@@ -239,7 +239,7 @@ class _customerSignUpPageState extends State<customerSignUpPage> {
                       ),
                       suffixIcon: IconButton(
                         padding: const EdgeInsets.only(right: 0.0),
-                        iconSize: 25.0, // Set the desired icon size
+                        iconSize: 25.0,
                         icon: _isObstract
                             ? const Icon(Icons.visibility_off,
                                 color: Colors.white)
