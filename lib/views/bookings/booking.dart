@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventhub/views/bookings/paymet_sucess.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -130,13 +129,6 @@ class _BookingPageState extends State<BookingPage> {
   }
 
 
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,9 +159,9 @@ class _BookingPageState extends State<BookingPage> {
               );
             }
           } else if (_currentStep == 1) {
-            // Handle Step 2 logic if needed
+
           }
-          // Add additional conditions for other steps if needed
+
         },
         onStepCancel: () {
           if (_currentStep > 0) {
@@ -177,7 +169,7 @@ class _BookingPageState extends State<BookingPage> {
               _currentStep--;
             });
           } else {
-            // Handle going back from the first step, if needed
+
           }
         },
         steps: [
@@ -291,7 +283,7 @@ class _BookingPageState extends State<BookingPage> {
                 const SizedBox(
                   height: 15,
                 ),
-                Divider(thickness: 2, color: Colors.black38),
+                const Divider(thickness: 2, color: Colors.black38),
                 const SizedBox(
                   height: 15,
                 ),
@@ -303,12 +295,12 @@ class _BookingPageState extends State<BookingPage> {
                 ),
                 ElevatedButton(
                   onPressed: () => _selectTime(context),
-                  child: const Text('Select Time'),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
+                  child: const Text('Select Time'),
                 ),
                 const SizedBox(
                   height: 15,
@@ -320,7 +312,7 @@ class _BookingPageState extends State<BookingPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Divider(thickness: 2, color: Colors.black38),
+                const Divider(thickness: 2, color: Colors.black38),
                 const SizedBox(
                   height: 15,
                 ),
@@ -351,11 +343,11 @@ class _BookingPageState extends State<BookingPage> {
                 const SizedBox(
                   height: 15,
                 ),
-                Divider(thickness: 2, color: Colors.black38),
+                const Divider(thickness: 2, color: Colors.black38),
                 const SizedBox(
                   height: 15,
                 ),
-                const Text('Informations',
+                const Text('Information',
                     style:
                     TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
                 const SizedBox(
@@ -370,7 +362,7 @@ class _BookingPageState extends State<BookingPage> {
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
-                    // Add any validation logic if needed
+
                     return null; // Return null if the input is valid
                   },
                   // Handle user input using onChanged or onSaved callbacks
@@ -387,7 +379,7 @@ class _BookingPageState extends State<BookingPage> {
             content: Column(
               children: [
                 const Text('Step 2 - Payment Gateway'),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
@@ -426,14 +418,14 @@ class _BookingPageState extends State<BookingPage> {
                                   "name": "Your Item",
                                   "quantity": 1,
                                   "price": originalPrice.toStringAsFixed(
-                                      2), // Format original price to 2 decimal places
+                                      2),
                                   "currency": "USD"
                                 },
                                 {
                                   "name": "Service Charge",
                                   "quantity": 1,
                                   "price": serviceCharge.toStringAsFixed(
-                                      2), // Format service charge to 2 decimal places
+                                      2),
                                   "currency": "USD"
                                 }
                               ],
@@ -467,11 +459,6 @@ class _BookingPageState extends State<BookingPage> {
                           // Send FCM message to service provider
                           await sendNotificationToServiceProvider(widget.serviceproviderId);
 
-                        /*  Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => ConfirmationPage(),
-                            ),
-                          ); */
                         },
                         onError: (error) {
                           print("onError: $error");
