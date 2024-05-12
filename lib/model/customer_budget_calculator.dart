@@ -27,7 +27,7 @@ class _BudgetCalculatePageState extends State<BudgetCalculatePage> {
                 value: 0,
                 hideExpression: true,
                 onChanged: (key, value, expression) {
-                  /*...*/
+
                 },
                 theme: const CalculatorThemeData(
                   displayColor: Colors.white,
