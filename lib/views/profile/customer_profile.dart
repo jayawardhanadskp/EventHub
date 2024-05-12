@@ -109,7 +109,7 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             CircleAvatar(
                               radius: 80,
                               backgroundImage: _getImageUrl(profilePhotoUrl),
@@ -117,12 +117,12 @@ class _ProfileCustomerState extends State<ProfileCustomer> {
                             const SizedBox(height: 16),
                             Text(
                               'Name: $name',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               'Email: $email',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ],
                         ),
