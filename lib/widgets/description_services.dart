@@ -11,7 +11,7 @@ class desciptionServices extends StatelessWidget {
           height: 600,
           width: 350,
           color: Colors.white60,
-          child: Text(
+          child: const Text(
               'Event Planners: Professional event planners who offer comprehensive event management services.'
           ,style: TextStyle(fontSize: 8, color: Colors.blue),),
         ),
