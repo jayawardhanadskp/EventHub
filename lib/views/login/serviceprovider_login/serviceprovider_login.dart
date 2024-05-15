@@ -146,8 +146,8 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                       color: Colors.white,
                     ),
                     suffixIcon: IconButton(
-                      padding: const EdgeInsets.only(right: 0.0), // Adjust padding
-                      iconSize: 25.0, // Set the desired icon size
+                      padding: const EdgeInsets.only(right: 0.0),
+                      iconSize: 25.0,
                       icon: _isObstract
                           ? const Icon(Icons.visibility_off, color: Colors.white)
                           : const Icon(Icons.visibility, color: Colors.white),
@@ -163,8 +163,6 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
               ),
               ElevatedButton(
                 onPressed: _signIn,
-                child:
-                _isSigning ? CircularProgressIndicator(color: Colors.blue.shade900): const Text("LOGIN"),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -177,6 +175,8 @@ class _CustomerLoginState extends State<ServiceProviderLogin> {
                   elevation: 10,
                   shadowColor: Colors.blue.shade900,
                 ),
+                child:
+                _isSigning ? CircularProgressIndicator(color: Colors.blue.shade900): const Text("LOGIN"),
               ),
 
               const SizedBox(
