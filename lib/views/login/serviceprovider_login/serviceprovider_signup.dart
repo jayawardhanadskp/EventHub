@@ -46,9 +46,6 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
   // image picker
   List<Uint8List?> _photos = [null, null, null, null];
 
-
-
-
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   void selectImage(int index) async {
@@ -187,7 +184,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               padding: const EdgeInsets.all(15.0),
-              fixedSize: const Size(230, 60),
+              fixedSize: const Size(220, 60),
               textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               backgroundColor: Colors.white,
               foregroundColor: Colors.blue.shade900,
@@ -214,7 +211,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               padding: const EdgeInsets.all(15.0),
-              fixedSize: const Size(150, 60),
+              fixedSize: const Size(148, 60),
               textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               backgroundColor: Colors.white,
               foregroundColor: Colors.white,
@@ -551,7 +548,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                                 borderSide: BorderSide(color: Colors.white),
                               ),
                             ),
-                            style: const TextStyle(color: Colors.white, fontSize: 20), // Style for the selected value
+                            style: const TextStyle(color: Colors.white, fontSize: 20),
                             icon: const Icon(Icons.arrow_drop_down_outlined, color: Colors.white),
 
 
@@ -736,7 +733,7 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                             children: [
                               for (int i = 0; i < 2; i++)
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                   child: Container(
                                     width: 120,
                                     height: 140,
@@ -770,9 +767,9 @@ class _serviceProviderSignUpState extends State<serviceProviderSignUp> {
                           const SizedBox(height: 20,width: 20,),
                           Row(
                             children: [
-                              for (int i = 2; i < 4; i++) // Adjust the number of image slots
+                              for (int i = 2; i < 4; i++)
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                  padding: const EdgeInsets.symmetric(horizontal:15.0),
                                   child: Container(
                                     width: 120,
                                     height: 140,
