@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 
 class FirebaseAuthServicesCustomer {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -46,7 +46,7 @@ class FirebaseAuthServicesCustomer {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.white,
-          textColor: Colors.red,
+          textColor: Colors.black,
           fontSize: 17.0,
         );
       } else {
@@ -56,7 +56,7 @@ class FirebaseAuthServicesCustomer {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.white,
-          textColor: Colors.red,
+          textColor: Colors.black,
           fontSize: 17.0,
         );
       }
