@@ -16,7 +16,7 @@ class _ReportProblemPageState extends State<ReportProblemPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 2), // Adjust the duration as needed
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -51,7 +51,7 @@ class _ReportProblemPageState extends State<ReportProblemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Report a Problem'),
+        title: const Text('Report a Problem'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,7 +62,7 @@ class _ReportProblemPageState extends State<ReportProblemPage> {
             children: [
               TextFormField(
                 controller: _reportController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Report',
                   hintText: 'Enter your report message',
                 ),
@@ -74,10 +74,10 @@ class _ReportProblemPageState extends State<ReportProblemPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitReport,
-                child: Text('Submit Report'),
+                child: const Text('Submit Report'),
               ),
             ],
           ),
