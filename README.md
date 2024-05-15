@@ -1,16 +1,12 @@
 # eventhub
 
-A new Flutter project.
+EventHub Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Open project on Android Studio or Vitual Studio
 
-A few resources to get you started if this is your first Flutter project:
+Open Android Studio or Vitual Studio Terminal
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Step 1 :- Run flutter pub get
+Step 2 :- Run flutter run or Run the project between android 10 and 14
