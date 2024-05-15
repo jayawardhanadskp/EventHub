@@ -89,9 +89,9 @@ class _ServiceProviderProfileEditState
         title: const Text('Edit Profile'),
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
-            const Tab(text: 'Description & Pricing'),
-            const Tab(text: 'Other Details'),
+          tabs: const [
+            Tab(text: 'Description & Pricing'),
+            Tab(text: 'Other Details'),
           ],
         ),
       ),

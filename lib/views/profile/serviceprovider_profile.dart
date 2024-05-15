@@ -1,5 +1,3 @@
-import 'package:eventhub/views/chat/chat_page.dart';
-import 'package:eventhub/views/chat/inbox_page.dart';
 import 'package:eventhub/views/profile/serviceprovider_profile_edit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +8,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
 import '../onbord_screen.dart';
-
-
-
-
 
 class ServiceProviderProfile extends StatefulWidget {
 
@@ -108,7 +102,7 @@ with SingleTickerProviderStateMixin {
           child:  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'My Profile',
                 style: TextStyle(color: Colors.white),
               ),
@@ -195,7 +189,7 @@ with SingleTickerProviderStateMixin {
                                 color: Colors.deepPurple.withOpacity(0.4),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3)
+                              offset: const Offset(0, 3)
                             )
 
                           ]
@@ -288,7 +282,7 @@ with SingleTickerProviderStateMixin {
                                border: Border.all(color: Colors.deepPurple),
                                borderRadius: BorderRadius.circular(8),
                              ),
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Column(
@@ -470,7 +464,7 @@ with SingleTickerProviderStateMixin {
                                color: Colors.deepPurple.withOpacity(0.4),
                                blurRadius: 5,
                                spreadRadius: 2,
-                               offset: Offset(0, 4)
+                               offset: const Offset(0, 4)
                              )
                            ]
                          ),

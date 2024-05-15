@@ -499,7 +499,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                     }
                                                   },
                                                   child: Text(
-                                                    'Book RS ${serviceProviderData?['pricing_plan_1_price'] ?? 'Not added'} Plan',
+                                                    'Book ${serviceProviderData?['pricing_plan_1_price'] ?? 'Not added'} Plan',
                                                     style: const TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
@@ -562,7 +562,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                     }
                                                   },
                                                   child: Text(
-                                                    'Book RS ${serviceProviderData?['pricing_plan_2_price'] ?? 'Not added'} Plan',
+                                                    'Book ${serviceProviderData?['pricing_plan_2_price'] ?? 'Not added'} Plan',
                                                     style: const TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
@@ -624,7 +624,7 @@ class _ServiceProviderProfileViewState extends State<ServiceProviderProfileView>
                                                     }
                                                   },
                                                   child: Text(
-                                                    'Book RS ${serviceProviderData?['pricing_plan_3_price'] ?? 'Not added'} Plan',
+                                                    'Book ${serviceProviderData?['pricing_plan_3_price'] ?? 'Not added'} Plan',
                                                     style: const TextStyle(color: Colors.white),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
