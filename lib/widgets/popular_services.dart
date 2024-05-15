@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../model/services_all.dart';
 import '../views/profile/customer_profile.dart';
 
 class popularServiceList extends StatelessWidget {
@@ -29,7 +30,7 @@ class popularServiceList extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ProfileCustomer()),
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
                   );
                 },
                 child: Padding(
@@ -77,7 +78,12 @@ class popularServiceList extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -123,7 +129,12 @@ class popularServiceList extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -169,7 +180,12 @@ class popularServiceList extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -215,7 +231,12 @@ class popularServiceList extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -261,7 +282,12 @@ class popularServiceList extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -307,7 +333,12 @@ class popularServiceList extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ServicesAll()),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
