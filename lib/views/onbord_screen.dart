@@ -15,7 +15,7 @@ class OnbordScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            height: 200,
+            height: 170,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -27,7 +27,7 @@ class OnbordScreen extends StatelessWidget {
             child: ClipPath(
               clipper: CurvedShapeClipper(),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 color: Colors.lightBlue.shade50,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -39,8 +39,8 @@ class OnbordScreen extends StatelessWidget {
                       repeat: true,
                       reverse: false,
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 30),
+                    const Text(
                       "Platform for EVENT Collaboration",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -50,7 +50,7 @@ class OnbordScreen extends StatelessWidget {
                         fontFamily: 'anton',
                       ),
                     ),
-                    SizedBox(height: 60),
+                    const SizedBox(height: 70),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -64,8 +64,8 @@ class OnbordScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        padding: EdgeInsets.all(20.0),
-                        textStyle: TextStyle(
+                        padding: const EdgeInsets.all(20.0),
+                        textStyle: const TextStyle(
                           fontSize: 23.5,
                           fontWeight: FontWeight.bold,
                         ),
@@ -73,11 +73,11 @@ class OnbordScreen extends StatelessWidget {
                         foregroundColor: Colors.blue.shade900,
                         elevation: 15,
                         shadowColor: Colors.blue.shade900,
-                        fixedSize: Size(400, 80),
+                        fixedSize: const Size(400, 80),
                       ),
                       child: const Text("SERVICE SEEKER"),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -91,8 +91,8 @@ class OnbordScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        padding: EdgeInsets.all(20.0),
-                        textStyle: TextStyle(
+                        padding: const EdgeInsets.all(20.0),
+                        textStyle: const TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.bold,
                         ),
@@ -100,7 +100,7 @@ class OnbordScreen extends StatelessWidget {
                         foregroundColor: Colors.blue.shade900,
                         elevation: 15,
                         shadowColor: Colors.blue.shade900,
-                        fixedSize: Size(400, 80),
+                        fixedSize: const Size(400, 80),
                       ),
                       child: const Text("SERVICE PROVIDER"),
                     ),
