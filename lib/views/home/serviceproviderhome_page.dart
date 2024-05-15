@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../model/review/review_retrive.dart';
 import '../../widgets/notifications.dart';
 import '../events/serviceprovider/events.dart';
 import '../onbord_screen.dart';
@@ -20,6 +21,8 @@ class HomePageServiceprovider extends StatefulWidget {
 }
 
 class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Map<String, dynamic>? serviceProviderData;
 
   // for calendar
@@ -190,7 +193,7 @@ class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
                           Row(
 
                             children: [
-                              Text(
+                              const Text(
                                 'Take a look at upcoming events',
                                 style: TextStyle(fontSize: 18),
                               ),
@@ -201,8 +204,8 @@ class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
 
                             ],
                           ),
-                          SizedBox(height: 8),
-                          Text(
+                          const SizedBox(height: 8),
+                          const Text(
                             ' ',
                             style: TextStyle(color: Colors.grey),
                           ),
@@ -494,6 +497,14 @@ class _HomePageServiceproviderState extends State<HomePageServiceprovider> {
                   ),
                   onTap: () {
 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ServiceProviderReviewsPage(
+                          serviceProviderId: _firebaseAuth.currentUser!.uid,
+                        ),
+                      ),
+                    );
                   },
                 );
               }
