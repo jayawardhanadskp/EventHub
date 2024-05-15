@@ -151,7 +151,6 @@ class _InboxPageState extends State<InboxPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(userData['name'] ?? 'Unknown'),
-              unseenCount > 0 ? Text('New message: $unseenCount') : SizedBox.shrink(),
             ],
           ),
           subtitle: Text(subtitle),
@@ -160,9 +159,6 @@ class _InboxPageState extends State<InboxPage> {
       },
     );
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
